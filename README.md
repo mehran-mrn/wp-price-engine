@@ -1,114 +1,69 @@
 # MRN Price Engine
 # نبض قیمت
 
-افزونه مستقل وردپرس قیمت‌گذاری پویا بر پایه طلا، ارز، سکه و رمزارز برای WordPress/WooCommerce.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/mehran-mrn/wp-price-engine/main/assets/images/logo.svg" alt="MRN Price Engine Logo" width="128" height="128">
+</p>
 
-نسخه فعلی: **1.1.0**
+<p align="center">
+  <strong>افزونه مستقل وردپرس قیمت‌گذاری پویا بر پایه طلا، ارز، سکه و رمزارز برای WordPress/WooCommerce</strong>
+</p>
 
-## نیازمندی‌ها
+<p align="center">
+  <a href="#-ویژگی‌ها">ویژگی‌ها</a> •
+  <a href="#-نیازمندی‌ها">نیازمندی‌ها</a> •
+  <a href="#-نصب">نصب</a> •
+  <a href="#-معماری">معماری</a> •
+  <a href="#-منابع-داده">منابع داده</a> •
+  <a href="#-فرمول-محصول">فرمول محصول</a> •
+  <a href="#-نمایش-در-سایت">نمایش در سایت</a> •
+  <a href="#-امنیت-و-پایداری">امنیت و پایداری</a>
+</p>
 
-- WordPress 6.6+
-- PHP 8.1+
-- WooCommerce برای قیمت‌گذاری محصول (تابلوهای نرخ بدون WooCommerce هم کار می‌کنند)
+<p align="center">
+  <img src="https://img.shields.io/badge/version-1.2.0-blue?style=flat-square" alt="Version">
+  <img src="https://img.shields.io/badge/WooCommerce-Compatible-96588A?style=flat-square&logo=woocommerce" alt="WooCommerce">
+  <img src="https://img.shields.io/badge/PHP-8.1+-777BB4?style=flat-square&logo=php" alt="PHP">
+  <img src="https://img.shields.io/badge/WordPress-6.6+-21759B?style=flat-square&logo=wordpress" alt="WordPress">
+  <img src="https://img.shields.io/badge/License-GPL--2.0--or--later-blue?style=flat-square" alt="License">
+</p>
 
-## معماری
+---
 
-درخواست خارجی هرگز در رندر صفحه یا سبد خرید اجرا نمی‌شود:
+## ✨ ویژگی‌ها
 
-```text
-WP-Cron / refresh دستی
-  → یک درخواست گروهی برای هر provider
-  → قفل ضد اجرای هم‌زمان
-  → ذخیره نرخ و تاریخچه در جدول محلی
-  → بازسازی batch قیمت محصولات
-  → نمایش/سبد/REST فقط از دیتای محلی
-```
+- **قیمت‌گذاری پویا** بر اساس نرخ‌های لحظه‌ای طلا، ارز، سکه و رمزارز
+- **۳۹+ منبع داده** معتبر داخلی و بین‌المللی
+- **تبدیل ارز هوشمند** با استفاده از الگوریتم جستجوی گراف
+- **فرمول‌نویسی پیشرفته** با قابلیت تنظیم درصد سود، هزینه ثابت و گرد کردن
+- **تاریخچه نرخ‌ها** برای تحلیل و گزارش‌گیری
+- **بلوک اختصاصی** در ویرایشگر گوتنبرگ
+- **شورت‌کدهای قدرتمند** برای نمایش در هر جای سایت
+- **ادغام کامل با ووکامرس** (قفل قیمت در سبد خرید، ذخیره مبنای قیمت در سفارشات)
+- **بدون درخواست خارجی** در زمان بازدید کاربر
+- **API REST عمومی** برای تازه‌سازی جدول‌های قیمت
+- **امنیت بالا** با استفاده از Nonce، Capability و Sanitization
+- **پشتیبانی از چندین ارز** و تبدیل خودکار به ارز فروشگاه
 
-جدول‌های افزونه:
+---
 
-- `{prefix}_mrnpe_assets`: تعریف دارایی و آخرین نرخ معتبر
-- `{prefix}_mrnpe_rate_history`: تاریخچه تغییرات
-- `{prefix}_mrnpe_logs`: رخدادها و خطاهای عملیاتی
+## 📋 نیازمندی‌ها
 
-## منابع داده
+- **WordPress** 6.6 یا بالاتر
+- **PHP** 8.1 یا بالاتر
+- **WooCommerce** (اختیاری - برای قیمت‌گذاری محصولات؛ تابلوی نرخ‌ها بدون ووکامرس نیز کار می‌کنند)
 
-- Navasan برای بازار ایران (نیازمند API key)
-- CoinGecko برای رمزارز؛ public keyless یا Demo key
-- Frankfurter برای نرخ مرجع بانک‌های مرکزی، بدون API key
-- Metals.Dev برای فلزات گران‌بها (نیازمند API key)
-- Custom JSON برای API اختصاصی یا منطقه‌ای
-- منابع عمومی بازار ایران: Wallex، Nobitex، Bitpin، TetherLand، Exir، Ramzinex و ArzPaya
-- اتصال‌های API نمونه شامل CoinMarketCap، CryptoCompare، Fixer، GoldAPI، Metals-API، OpenExchangeRates و سرویس‌های نرخ ایرانی
+---
 
-در مجموع ۳۹ اتصال در کاتالوگ افزونه وجود دارد. سرویس‌های عمومی پایدار بدون کلید به‌صورت پیش‌فرض فعال‌اند؛ اتصال‌های نیازمند کلید و endpointهای قدیمی یا مبتنی بر scraping تا زمان پیکربندی مدیر خاموش می‌مانند.
+## 🚀 نصب
 
-همه providerها با فیلتر `mrnpe_rate_providers` قابل توسعه‌اند.
+### از طریق وردپرس
+1. به **پیشخوان → افزونه‌ها → افزودن** بروید
+2. فایل `mrn-price-engine.zip` را آپلود کنید
+3. افزونه را فعال کنید
 
-## تبدیل ارز مبنا
-
-اگر ارز نرخ انتخابی با ارز فروشگاه ووکامرس متفاوت باشد، افزونه قبل از اجرای فرمول از نرخ‌های جفت‌ارز ذخیره‌شده در دیتابیس استفاده می‌کند. برای نمونه، قیمت `BTC_USD` در فروشگاه تومانی می‌تواند از مسیر زیر محاسبه شود:
-
-```text
-BTC_USD × USD_USDT × USDT_IRT
-```
-
-این تبدیل نیز فقط با داده محلی انجام می‌شود و هنگام مشاهده محصول هیچ درخواست خارجی تازه‌ای ارسال نمی‌کند.
-
-## فرمول محصول
-
-```text
-material = local_rate × quantity × product_multiplier
-regular  = material + (material × markup_percent / 100) + fixed_amount
-sale     = regular - (regular × discount_percent / 100) - fixed_discount
-```
-
-مثال ۱٫۴۳ گرم طلا:
-
-- نرخ مبنا: `GOLD_18K_IRT`
-- مقدار: `1.43`
-- ضریب: `1`
-- درصد: اجرت/سود دلخواه
-- مبلغ ثابت: بسته‌بندی، سنگ یا هزینه ثابت
-- گردکردن: نزدیک‌ترین/بالا/پایین با گام قابل انتخاب
-
-قیمت محاسبه‌شده داخل فیلدهای استاندارد WooCommerce هم ذخیره می‌شود تا sorting، price filter، Store API و lookup table درست بمانند.
-
-## نمایش در سایت
-
-بلوک «تابلوی قیمت MRN» در Gutenberg ثبت می‌شود.
-
-```text
-[mrn_price_board assets="GOLD_18K_IRT,USD_IRT,BTC_USD" layout="cards" theme="auto" columns="3" title="قیمت لحظه‌ای بازار"]
-```
-
-چیدمان‌ها: `cards`، `table` و `ticker`.
-
-```text
-[mrn_rate symbol="GOLD_18K_IRT" decimals="0"]
-```
-
-تازه‌سازی فرانت‌اند فقط REST محلی افزونه را می‌خواند و درخواست خارجی ایجاد نمی‌کند.
-
-## تست
-
-```powershell
-.\tools\verify.ps1
-```
-
-ساخت فایل نصب:
-
-```powershell
-.\tools\package.ps1
-```
-
-## امنیت و پایداری
-
-- nonce و capability روی همه mutationهای مدیریت
-- `wp_safe_remote_get` و URL فقط HTTPS برای provider سفارشی
-- API keyها فقط سمت سرور و option با autoload خاموش
-- آخرین نرخ معتبر در خطای provider حذف نمی‌شود
-- امکان غیرفعال‌کردن خرید هنگام stale شدن نرخ
-- snapshot نرخ و قیمت روی cart/order
-- حذف داده‌ها در uninstall فقط با انتخاب صریح مدیر
-
-License: GPL-2.0-or-later
+### از طریق گیت
+```bash
+git clone https://github.com/mehran-mrn/mrn-price-engine.git
+cd mrn-price-engine
+composer install
