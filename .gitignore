@@ -1,0 +1,21 @@
+# Build artifacts.
+/dist/
+/*.zip
+
+# Local tooling and credentials.
+.env
+.env.*
+!.env.example
+*.credential.xml
+*.pem
+*.key
+.DS_Store
+Thumbs.db
+
+# IDE and dependency caches.
+/.idea/
+/.vscode/
+/vendor/
+/node_modules/
+/.phpunit.cache/
+/.phpunit.result.cache
