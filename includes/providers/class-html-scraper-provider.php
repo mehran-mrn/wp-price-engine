@@ -133,13 +133,27 @@ final class HTML_Scraper_Provider extends Abstract_Provider {
 			return $html;
 		}
 
-		$value = HTML_Rate_Parser::milli( $html );
+		$value      = HTML_Rate_Parser::milli( $html );
+		$source_url = $url;
+		$method     = 'html-scraping';
 		if ( null === $value || $value <= 0 ) {
-			return $this->invalid_response( 'Milli' );
+			$api_url = 'https://milli.gold/api/v1/public/milli-price/external';
+			++$this->requests;
+			$response = $this->get_json( $api_url );
+			$price18  = is_wp_error( $response ) ? null : ( $response['data']['price18'] ?? null );
+
+			if ( ! is_numeric( $price18 ) || (float) $price18 <= 0 ) {
+				$detail = is_wp_error( $response ) ? $response->get_error_message() : '';
+				return $this->invalid_response( 'Milli', $detail );
+			}
+
+			$value      = (float) $price18 * 1000;
+			$source_url = $api_url;
+			$method     = 'public-json-fallback';
 		}
 
 		return array(
-			'gold_18k' => $this->rate_item( $value, 'طلای ۱۸ عیار Milli', $url ),
+			'gold_18k' => $this->rate_item( $value, 'طلای ۱۸ عیار Milli', $source_url, $method ),
 		);
 	}
 
@@ -224,12 +238,12 @@ final class HTML_Scraper_Provider extends Abstract_Provider {
 	/**
 	 * @return array<string, mixed>
 	 */
-	private function rate_item( float $value, string $name, string $url ): array {
+	private function rate_item( float $value, string $name, string $url, string $method = 'html-scraping' ): array {
 		return array(
 			'value'      => $value,
 			'name'       => sanitize_text_field( $name ),
 			'source_url' => $url,
-			'method'     => 'html-scraping',
+			'method'     => $method,
 			'scraped_at' => time(),
 		);
 	}
