@@ -346,6 +346,7 @@
 .mrnpe-tier--public { background: #e6f6ee; color: #14734b; }
 .mrnpe-tier--free-key { background: #edf2fb; color: #315d9a; }
 .mrnpe-tier--paid { background: #f7efe0; color: #8a601d; }
+.mrnpe-tier--scraper { background: #f0ebfa; color: #64439b; }
 .mrnpe-tier--legacy { background: #f3eeee; color: #846565; }
 .mrnpe-source p { color: var(--pe-muted); font-size: 9px; line-height: 1.7; margin: 0; }
 .mrnpe-switch { align-items: center; cursor: pointer; display: inline-flex; gap: 6px; }

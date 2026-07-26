@@ -4,7 +4,7 @@ Tags: woocommerce, dynamic pricing, gold, currency, crypto, iran
 Requires at least: 6.6
 Tested up to: 6.8
 Requires PHP: 8.1
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,7 +16,7 @@ MRN Price Engine fetches provider rates only through scheduled or administrator-
 
 Features include:
 
-* 36 rate-provider integrations, including public Iranian crypto markets, free-key services and configurable JSON.
+* 42 rate-provider integrations, including public Iranian crypto markets, HTML discovery, free-key services and configurable JSON.
 * Request coalescing, provider pacing and concurrent-run locking.
 * Automatic cached currency conversion for assets whose quote currency differs from the WooCommerce store currency.
 * Simple and variable WooCommerce product formulas.
@@ -33,6 +33,12 @@ Features include:
 4. Fetch rates, then select a rate in the product's "قیمت‌گذاری پویا" tab.
 
 == Changelog ==
+
+= 1.2.0 =
+* Add bounded HTML rate discovery for Milli Gold, MelliGold and TGJU.
+* Discover more than 100 TGJU symbols with one cached page request.
+* Seed practical gold, coin and currency rates while preserving merchant-created assets.
+* Keep the last valid rate when a public page changes and its parser cannot validate the result.
 
 = 1.1.0 =
 * Convert USD-quoted crypto rates to the WooCommerce store currency through locally cached rate pairs.

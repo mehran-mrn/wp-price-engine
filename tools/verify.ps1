@@ -37,6 +37,14 @@ else {
 	Write-Host '[ ok ] Pricing formula tests' -ForegroundColor Green
 }
 
+& php (Join-Path $pluginRoot 'tests\test-html-rate-parser.php')
+if ($LASTEXITCODE -ne 0) {
+	$errors.Add('HTML rate parser tests failed.')
+}
+else {
+	Write-Host '[ ok ] HTML rate parser tests' -ForegroundColor Green
+}
+
 $forbidden = @(
 	'eval\s*\(',
 	'base64_decode\s*\(',

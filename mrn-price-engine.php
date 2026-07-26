@@ -3,7 +3,7 @@
  * Plugin Name:       MRN Price Engine
  * Plugin URI:        https://github.com/mehran-mrn/wp-price-engine
  * Description:       موتور حرفه‌ای نرخ و قیمت‌گذاری پویا برای طلا، ارز، رمزارز و محصولات ووکامرس.
- * Version:           1.1.0
+ * Version:           1.2.0
  * Requires at least: 6.6
  * Requires PHP:      8.1
  * Requires Plugins:  woocommerce
@@ -18,7 +18,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MRNPE_VERSION', '1.1.0' );
+define( 'MRNPE_VERSION', '1.2.0' );
 define( 'MRNPE_FILE', __FILE__ );
 define( 'MRNPE_PATH', plugin_dir_path( __FILE__ ) );
 define( 'MRNPE_URL', plugin_dir_url( __FILE__ ) );

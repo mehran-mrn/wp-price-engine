@@ -6,7 +6,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $pluginRoot = Split-Path -Parent $PSScriptRoot
 $pluginName = Split-Path -Leaf $pluginRoot
-$version = '1.1.0'
+$version = '1.2.0'
 
 & (Join-Path $PSScriptRoot 'verify.ps1')
 if ($LASTEXITCODE -ne 0) {

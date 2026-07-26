@@ -281,13 +281,7 @@ final class Asset_Repository {
 	 * @return void
 	 */
 	public function seed_upgrade_assets(): void {
-		foreach ( $this->all() as $asset ) {
-			if ( 'USDT_IRT' === (string) $asset->symbol ) {
-				return;
-			}
-		}
-
-		$this->save(
+		$defaults = array(
 			array(
 				'symbol'         => 'USDT_IRT',
 				'name'           => 'تتر بازار (پل تبدیل دلار)',
@@ -297,8 +291,179 @@ final class Asset_Repository {
 				'provider'       => 'wallexir',
 				'provider_key'   => 'USDTTMN',
 				'multiplier'     => 1,
-			)
+			),
+			array(
+				'symbol'         => 'GOLD_18K_MILLI_IRR',
+				'name'           => 'طلای ۱۸ عیار — Milli',
+				'category'       => 'metal',
+				'unit'           => 'گرم',
+				'quote_currency' => 'IRR',
+				'provider'       => 'milli_scraper',
+				'provider_key'   => 'gold_18k',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'GOLD_18K_MELLIGOLD_IRT',
+				'name'           => 'طلای ۱۸ عیار — ملی‌گلد',
+				'category'       => 'metal',
+				'unit'           => 'گرم',
+				'quote_currency' => 'IRT',
+				'provider'       => 'melligold_scraper',
+				'provider_key'   => '18-karat-gold',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'GOLD_24K_MELLIGOLD_IRT',
+				'name'           => 'طلای ۲۴ عیار — ملی‌گلد',
+				'category'       => 'metal',
+				'unit'           => 'گرم',
+				'quote_currency' => 'IRT',
+				'provider'       => 'melligold_scraper',
+				'provider_key'   => '24-karat-gold',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'BAHAR_AZADI_MELLIGOLD_IRT',
+				'name'           => 'سکه بهار آزادی — ملی‌گلد',
+				'category'       => 'coin',
+				'unit'           => 'عدد',
+				'quote_currency' => 'IRT',
+				'provider'       => 'melligold_scraper',
+				'provider_key'   => 'bahar-azadi-coin',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'GOLD_18K_TGJU_IRR',
+				'name'           => 'طلای ۱۸ عیار — TGJU',
+				'category'       => 'metal',
+				'unit'           => 'گرم',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'geram18',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'GOLD_24K_TGJU_IRR',
+				'name'           => 'طلای ۲۴ عیار — TGJU',
+				'category'       => 'metal',
+				'unit'           => 'گرم',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'geram24',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'EMAMI_TGJU_IRR',
+				'name'           => 'سکه امامی — TGJU',
+				'category'       => 'coin',
+				'unit'           => 'عدد',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'sekee',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'BAHAR_AZADI_TGJU_IRR',
+				'name'           => 'سکه بهار آزادی — TGJU',
+				'category'       => 'coin',
+				'unit'           => 'عدد',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'sekeb',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'HALF_COIN_TGJU_IRR',
+				'name'           => 'نیم سکه — TGJU',
+				'category'       => 'coin',
+				'unit'           => 'عدد',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'nim',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'QUARTER_COIN_TGJU_IRR',
+				'name'           => 'ربع سکه — TGJU',
+				'category'       => 'coin',
+				'unit'           => 'عدد',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'rob',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'GRAM_COIN_TGJU_IRR',
+				'name'           => 'سکه گرمی — TGJU',
+				'category'       => 'coin',
+				'unit'           => 'عدد',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'gerami',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'USD_IRR',
+				'name'           => 'دلار آزاد — TGJU',
+				'category'       => 'currency',
+				'unit'           => 'USD',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'price_dollar_rl',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'EUR_IRR',
+				'name'           => 'یورو آزاد — TGJU',
+				'category'       => 'currency',
+				'unit'           => 'EUR',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'price_eur',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'GBP_IRR',
+				'name'           => 'پوند انگلیس — TGJU',
+				'category'       => 'currency',
+				'unit'           => 'GBP',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'price_gbp',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'AED_IRR',
+				'name'           => 'درهم امارات — TGJU',
+				'category'       => 'currency',
+				'unit'           => 'AED',
+				'quote_currency' => 'IRR',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'price_aed',
+				'multiplier'     => 1,
+			),
+			array(
+				'symbol'         => 'XAU_USD',
+				'name'           => 'انس جهانی طلا — TGJU',
+				'category'       => 'metal',
+				'unit'           => 'اونس',
+				'quote_currency' => 'USD',
+				'provider'       => 'tgju_scraper',
+				'provider_key'   => 'ons',
+				'multiplier'     => 1,
+			),
 		);
+
+		$existing = array();
+		foreach ( $this->all() as $asset ) {
+			$existing[ (string) $asset->symbol ] = true;
+		}
+
+		foreach ( $defaults as $asset ) {
+			if ( ! isset( $existing[ $asset['symbol'] ] ) ) {
+				$this->save( $asset );
+			}
+		}
 	}
 
 	/**
