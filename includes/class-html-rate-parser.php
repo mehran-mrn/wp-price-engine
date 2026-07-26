@@ -94,7 +94,22 @@ final class HTML_Rate_Parser {
 		}
 
 		if ( preg_match( '/قیمت\s*۱\s*گرم\s*طلای\s*۱۸\s*عیار\s*میلی\s*([0-9۰-۹٠-٩][0-9۰-۹٠-٩٬،,.\s]*)\s*ریال/u', $text, $match ) ) {
-			return self::number( $match[1] );
+			$value = self::number( $match[1] );
+			if ( null !== $value && $value > 0 ) {
+				return $value;
+			}
+		}
+
+		/*
+		 * Milli's server-side card can render zero while its public Next.js
+		 * payload already contains price18. The widget multiplies this value
+		 * by 1,000 before labeling it as Rials.
+		 */
+		if ( preg_match( '/\\\\?"price18\\\\?"\s*:\s*([0-9]+(?:\.[0-9]+)?)/', $html, $match ) ) {
+			$value = self::number( $match[1] );
+			if ( null !== $value && $value > 0 ) {
+				return $value * 1000;
+			}
 		}
 
 		return null;

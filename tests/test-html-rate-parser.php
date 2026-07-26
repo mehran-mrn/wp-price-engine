@@ -29,6 +29,12 @@ $milli = <<<'HTML'
 HTML;
 assert_rate( 181_430_000, HTML_Rate_Parser::milli( $milli ), 'Milli widget rate' );
 
+$milli_next = <<<'HTML'
+<main>قیمت ۱ گرم طلای ۱۸ عیار میلی 0 ریال</main>
+<script>self.__next_f.push([1,"{\"price18\":181450}"])</script>
+HTML;
+assert_rate( 181_450_000, HTML_Rate_Parser::milli( $milli_next ), 'Milli Next.js fallback rate' );
+
 $melligold = <<<'HTML'
 <div>
 	<div><span>آخرین قیمت</span></div>
