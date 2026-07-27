@@ -8,6 +8,7 @@
 namespace MRN\Price_Engine;
 
 use MRN\Price_Engine\Providers\Extended_Provider;
+use MRN\Price_Engine\Providers\HTML_Scraper_Provider;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -77,7 +78,7 @@ final class Settings {
 			),
 			);
 
-		return array_merge( $native, Extended_Provider::default_settings() );
+		return array_merge( $native, Extended_Provider::default_settings(), HTML_Scraper_Provider::default_settings() );
 	}
 
 	/**

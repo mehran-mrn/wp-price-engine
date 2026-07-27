@@ -367,6 +367,7 @@ final class Admin {
 						<button type="button" data-tier="public"><?php esc_html_e( 'رایگان و بدون کلید', 'mrn-price-engine' ); ?></button>
 						<button type="button" data-tier="free-key"><?php esc_html_e( 'پلن رایگان با کلید', 'mrn-price-engine' ); ?></button>
 						<button type="button" data-tier="paid"><?php esc_html_e( 'تجاری', 'mrn-price-engine' ); ?></button>
+						<button type="button" data-tier="scraper"><?php esc_html_e( 'کشف از HTML', 'mrn-price-engine' ); ?></button>
 						<button type="button" data-tier="legacy"><?php esc_html_e( 'قدیمی / سفارشی', 'mrn-price-engine' ); ?></button>
 					</div>
 				</div>
@@ -388,6 +389,7 @@ final class Admin {
 							'public'   => __( 'رایگان، بدون کلید', 'mrn-price-engine' ),
 							'free-key' => __( 'پلن رایگان با کلید', 'mrn-price-engine' ),
 							'paid'     => __( 'تجاری', 'mrn-price-engine' ),
+							'scraper'  => __( 'کشف از HTML', 'mrn-price-engine' ),
 							'legacy'   => __( 'قدیمی / سفارشی', 'mrn-price-engine' ),
 						);
 						?>

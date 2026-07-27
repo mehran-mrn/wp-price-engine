@@ -11,6 +11,7 @@ use MRN\Price_Engine\Providers\Coingecko_Provider;
 use MRN\Price_Engine\Providers\Custom_JSON_Provider;
 use MRN\Price_Engine\Providers\Extended_Provider;
 use MRN\Price_Engine\Providers\Frankfurter_Provider;
+use MRN\Price_Engine\Providers\HTML_Scraper_Provider;
 use MRN\Price_Engine\Providers\Metals_Dev_Provider;
 use MRN\Price_Engine\Providers\Navasan_Provider;
 
@@ -32,7 +33,8 @@ final class Provider_Manager {
 				new Metals_Dev_Provider(),
 				new Custom_JSON_Provider(),
 			),
-			Extended_Provider::instances()
+			Extended_Provider::instances(),
+			HTML_Scraper_Provider::instances()
 		);
 
 		foreach ( $providers as $provider ) {
@@ -99,7 +101,9 @@ final class Provider_Manager {
 
 				$state[ $key ]['last_attempt'] = time();
 				$result                        = $provider->fetch( $provider_assets );
-				++$report['requests'];
+				$report['requests']           += method_exists( $provider, 'request_count' )
+					? max( 0, (int) $provider->request_count() )
+					: 1;
 
 				if ( is_wp_error( $result ) ) {
 					$this->assets->mark_provider_error( $key );
