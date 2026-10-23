@@ -9,7 +9,7 @@ defined( 'ABSPATH' ) || define( 'ABSPATH', __DIR__ . '/' );
 
 require_once dirname( __DIR__ ) . '/includes/class-html-rate-parser.php';
 
-use MRN\Price_Engine\HTML_Rate_Parser;
+use MRNPE\Price_Engine\HTML_Rate_Parser;
 
 function assert_rate( float $expected, ?float $actual, string $message ): void {
 	if ( null === $actual || abs( $expected - $actual ) > 0.000001 ) {

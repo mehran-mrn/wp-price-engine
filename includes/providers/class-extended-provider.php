@@ -1,19 +1,19 @@
 <?php
 /**
- * Extended provider catalog adapted from the supplied reference plugin.
+ * Extended rate provider adapters.
  *
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine\Providers;
+namespace MRNPE\Price_Engine\Providers;
 
-use MRN\Price_Engine\Abstract_Provider;
-use MRN\Price_Engine\Settings;
+use MRNPE\Price_Engine\Abstract_Provider;
+use MRNPE\Price_Engine\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * One audited adapter class for the extended provider catalog.
+ * Adapter for the extended provider catalog.
  *
  * Public providers use their current JSON endpoints. Keyed and legacy
  * providers remain available to merchants without being called until an
@@ -62,7 +62,6 @@ final class Extended_Provider extends Abstract_Provider {
 
 		return array(
 			'abantether'       => self::definition( 'Aban Tether', 'بازار رمزارز ایران؛ نیازمند کلید دسترسی عمومی API.', false, 10, $api_key, 'free-key' ),
-			'apimaster'         => self::definition( 'API Master', 'نرخ ارز، طلا و سکه ایران.', false, 15, $api_key, 'paid' ),
 			'arzpaya'           => self::definition( 'ArzPaya', 'بازار عمومی رمزارز به تومان؛ بدون کلید.', true, 10, array(), 'public' ),
 			'bitpin'            => self::definition( 'Bitpin', 'بازار عمومی رمزارز به تومان؛ بدون کلید.', true, 10, array(), 'public' ),
 			'bonbast'           => self::definition(
@@ -137,7 +136,6 @@ final class Extended_Provider extends Abstract_Provider {
 				'free-key'
 			),
 			'metalslive'        => self::definition( 'Metals Live', 'رابط عمومی قدیمی فلزات؛ پیش‌فرض خاموش به‌دلیل نبود SLA رسمی.', false, 30, array(), 'legacy' ),
-			'nerkhapi'          => self::definition( 'Nerkh-API', 'نرخ ارز و طلای ایران؛ نیازمند کلید.', false, 15, $api_key, 'paid' ),
 			'nobitex'           => self::definition( 'Nobitex', 'بازار عمومی رمزارز به ریال؛ بدون کلید.', true, 10, array(), 'public' ),
 			'okexio'            => self::definition( 'OK-EX.io', 'رابط قدیمی صرافی؛ برای سازگاری با داده‌های مهاجرتی.', false, 15, array(), 'legacy' ),
 			'openexchangerates' => self::definition(
@@ -151,31 +149,6 @@ final class Extended_Provider extends Abstract_Provider {
 			'parsijoo'          => self::definition( 'Parsijoo', 'رابط قدیمی نرخ ایران؛ پیش‌فرض خاموش.', false, 30, array(), 'legacy' ),
 			'persianapi'        => self::definition( 'Persian API / TGJU', 'نرخ‌های بازار ایران؛ نیازمند توکن سرویس.', false, 15, $token, 'paid' ),
 			'ramzinex'          => self::definition( 'Ramzinex', 'بازار عمومی رمزارز به ریال؛ بدون کلید.', true, 10, array(), 'public' ),
-			'ratesbox'          => self::definition( 'RatesBox', 'طلا، سکه و ارز ایران؛ نیازمند توکن.', false, 15, $token, 'paid' ),
-			'sourcearena'       => self::definition( 'Sourcearena', 'نرخ ارز و طلا؛ نیازمند توکن.', false, 15, $token, 'paid' ),
-			'sunnyweb'          => self::definition( 'SunnyWeb Old', 'نسخه قدیمی وب‌سرویس نرخ ایران؛ نیازمند توکن.', false, 15, $token, 'paid' ),
-			'sunnywebnew'       => self::definition(
-				'SunnyWeb New',
-				'ارز، طلا، سکه و کالا؛ نیازمند توکن.',
-				false,
-				15,
-				array_merge(
-					$token,
-					array( 'parameter' => array( 'label' => 'گروه داده', 'type' => 'text', 'default' => 'azad' ) )
-				),
-				'paid'
-			),
-			'sunnywebshabakeh'  => self::definition(
-				'SunnyWeb Shabakeh',
-				'نرخ شبکه صرافی‌ها؛ نیازمند توکن.',
-				false,
-				15,
-				array_merge(
-					$token,
-					array( 'coin' => array( 'label' => 'ارز', 'type' => 'text', 'default' => 'usd' ) )
-				),
-				'paid'
-			),
 			'tabangohar'        => self::definition(
 				'Taban Gohar',
 				'نرخ طلای طلا‌فروشی؛ اتصال حساب‌محور.',
@@ -198,7 +171,6 @@ final class Extended_Provider extends Abstract_Provider {
 				array( 'url' => array( 'label' => 'نشانی JSON', 'type' => 'url', 'default' => '' ) ),
 				'paid'
 			),
-			'wallexir'          => self::definition( 'Wallex', 'بازارهای عمومی رمزارز به تومان؛ بدون کلید و با endpoint رسمی جدید.', true, 10, array(), 'public' ),
 		);
 	}
 
@@ -280,9 +252,7 @@ final class Extended_Provider extends Abstract_Provider {
 			'nobitex'           => $this->fetch_nobitex(),
 			'ramzinex'          => $this->fetch_ramzinex(),
 			'tetherland'        => $this->fetch_tetherland(),
-			'wallexir'          => $this->fetch_wallex(),
 			'abantether'        => $this->fetch_abantether(),
-			'apimaster'         => $this->fetch_apimaster(),
 			'coinmarketcap'     => $this->fetch_coinmarketcap( $keys ),
 			'commoditiesapicom' => $this->fetch_commodities( $keys ),
 			'cryptocompare'     => $this->fetch_cryptocompare( $keys ),
@@ -291,45 +261,15 @@ final class Extended_Provider extends Abstract_Provider {
 			'goldapiio'         => $this->fetch_goldapi( $keys ),
 			'metalpriceapicom'  => $this->fetch_metalprice( $keys ),
 			'metalsapicom'      => $this->fetch_metals_api( $keys ),
-			'nerkhapi'          => $this->fetch_nerkh_api(),
 			'openexchangerates' => $this->fetch_open_exchange( $keys ),
-			'ratesbox'          => $this->fetch_ratesbox(),
-			'sourcearena'       => $this->fetch_sourcearena(),
-			'sunnyweb'          => $this->fetch_sunnyweb( 'old' ),
-			'sunnywebnew'       => $this->fetch_sunnyweb( 'new' ),
-			'sunnywebshabakeh'  => $this->fetch_sunnyweb( 'shabakeh' ),
 			'tgjulocal'         => $this->fetch_tgju_local(),
 			default             => new \WP_Error(
 				'mrnpe_legacy_provider',
-				__( 'endpoint این اتصال در نسخه نمونه منسوخ یا مبتنی بر scraping ناامن است؛ منبع فقط برای مهاجرت نگه داشته شده و پیش‌فرض خاموش است.', 'mrn-price-engine' )
+				__( 'این اتصال قدیمی فعال نیست؛ برای حفظ تنظیمات نسخه‌های قبلی نگه داشته شده است. یک منبع پشتیبانی‌شده انتخاب کنید.', 'mrn-gold-currency-pricing' )
 			),
 		};
 	}
 
-	/** @return array<string, array<string, mixed>>|\WP_Error */
-	private function fetch_wallex(): array|\WP_Error {
-		$response = $this->get_json( 'https://api.wallex.ir/hector/web/v1/markets' );
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		$markets = $response['result']['markets'] ?? null;
-		if ( ! is_array( $markets ) ) {
-			return $this->invalid_response();
-		}
-
-		$data = array();
-		foreach ( $markets as $market ) {
-			if ( empty( $market['symbol'] ) || ! is_numeric( $market['price'] ?? null ) ) {
-				continue;
-			}
-			$data[ (string) $market['symbol'] ] = $this->rate_item(
-				(float) $market['price'],
-				(string) ( $market['fa_base_asset'] ?? $market['base_asset'] ?? $market['symbol'] ),
-				(float) ( $market['change_24h'] ?? 0 )
-			);
-		}
-		return $data;
-	}
 
 	/** @return array<string, array<string, mixed>>|\WP_Error */
 	private function fetch_nobitex(): array|\WP_Error {
@@ -485,25 +425,6 @@ final class Extended_Provider extends Abstract_Provider {
 		return $data ?: $this->invalid_response( (string) ( $response['message'] ?? '' ) );
 	}
 
-	/** @return array<string, array<string, mixed>>|\WP_Error */
-	private function fetch_apimaster(): array|\WP_Error {
-		$key = $this->required( 'api_key' );
-		if ( is_wp_error( $key ) ) {
-			return $key;
-		}
-		$response = $this->get_json( 'https://api.apimaster.ir/nerkh/v2/list', array( 'Authorization' => $key ) );
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-
-		$data = array();
-		foreach ( (array) ( $response['data'] ?? array() ) as $item ) {
-			if ( ! empty( $item['slug'] ) && is_numeric( $item['price'] ?? null ) ) {
-				$data[ (string) $item['slug'] ] = $this->rate_item( (float) $item['price'], (string) ( $item['name'] ?? $item['slug'] ) );
-			}
-		}
-		return $data ?: $this->invalid_response( (string) ( $response['message'] ?? '' ) );
-	}
 
 	/**
 	 * @param array<int, string> $keys Symbols.
@@ -734,82 +655,16 @@ final class Extended_Provider extends Abstract_Provider {
 		return $this->flat_rates( (array) ( $response['rates'] ?? array() ) );
 	}
 
-	/** @return array<string, array<string, mixed>>|\WP_Error */
-	private function fetch_nerkh_api(): array|\WP_Error {
-		$key = $this->required( 'api_key' );
-		if ( is_wp_error( $key ) ) {
-			return $key;
-		}
-		$data = array();
-		foreach ( array( 'currency', 'gold' ) as $endpoint ) {
-			$response = $this->get_json( 'https://nerkh-api.ir/api/' . rawurlencode( $key ) . '/' . $endpoint . '/' );
-			if ( is_wp_error( $response ) ) {
-				return $response;
-			}
-			foreach ( (array) ( $response['prices'] ?? $response['data']['prices'] ?? array() ) as $symbol => $item ) {
-				$value = is_array( $item ) ? ( $item['current'] ?? null ) : $item;
-				if ( is_numeric( $value ) ) {
-					$data[ (string) $symbol ] = $this->rate_item( (float) $value, (string) $symbol );
-				}
-			}
-		}
-		return $data ?: $this->invalid_response();
-	}
 
-	/** @return array<string, array<string, mixed>>|\WP_Error */
-	private function fetch_ratesbox(): array|\WP_Error {
-		$token = $this->required( 'token' );
-		if ( is_wp_error( $token ) ) {
-			return $token;
-		}
-		$response = $this->get_json( add_query_arg( 'token', $token, 'https://api.ratebox.ir/apijson.php' ) );
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		return $this->normalize_items( $response['data'] ?? $response, 'id', 'price', 'name' );
-	}
 
-	/** @return array<string, array<string, mixed>>|\WP_Error */
-	private function fetch_sourcearena(): array|\WP_Error {
-		$token = $this->required( 'token' );
-		if ( is_wp_error( $token ) ) {
-			return $token;
-		}
-		$response = $this->get_json( add_query_arg( 'token', $token, 'https://sourcearena.ir/api/' ) );
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		return $this->normalize_items( $response['data'] ?? $response, 'slug', 'price', 'name' );
-	}
 
-	/**
-	 * @param string $variant old, new or shabakeh.
-	 * @return array<string, array<string, mixed>>|\WP_Error
-	 */
-	private function fetch_sunnyweb( string $variant ): array|\WP_Error {
-		$token = $this->required( 'token' );
-		if ( is_wp_error( $token ) ) {
-			return $token;
-		}
-		$config = Settings::provider( $this->key() );
-		$url    = match ( $variant ) {
-			'new'       => 'https://api.sunnyweb.ir/api/new/' . rawurlencode( $token ) . '/' . rawurlencode( (string) ( $config['parameter'] ?? 'azad' ) ),
-			'shabakeh'  => 'https://api.sunnyweb.ir/api/shabakeh/' . rawurlencode( $token ) . '/' . rawurlencode( (string) ( $config['coin'] ?? 'usd' ) ),
-			default     => 'https://api.sunnyweb.ir/api/' . rawurlencode( $token ),
-		};
-		$response = $this->get_json( $url );
-		if ( is_wp_error( $response ) ) {
-			return $response;
-		}
-		return $this->normalize_items( $response, 'name', 'price', 'persianName' );
-	}
 
 	/** @return array<string, array<string, mixed>>|\WP_Error */
 	private function fetch_tgju_local(): array|\WP_Error {
 		$config = Settings::provider( $this->key() );
 		$url    = esc_url_raw( (string) ( $config['url'] ?? '' ), array( 'https' ) );
 		if ( ! $url ) {
-			return new \WP_Error( 'mrnpe_provider_config', __( 'نشانی HTTPS خروجی TGJU وارد نشده است.', 'mrn-price-engine' ) );
+			return new \WP_Error( 'mrnpe_provider_config', __( 'نشانی HTTPS خروجی TGJU وارد نشده است.', 'mrn-gold-currency-pricing' ) );
 		}
 		$response = $this->get_json( $url );
 		if ( is_wp_error( $response ) ) {
@@ -892,7 +747,7 @@ final class Extended_Provider extends Abstract_Provider {
 				'mrnpe_provider_config',
 				sprintf(
 					/* translators: %s: provider label. */
-					__( 'اطلاعات دسترسی منبع %s کامل نیست.', 'mrn-price-engine' ),
+					__( 'اطلاعات دسترسی منبع %s کامل نیست.', 'mrn-gold-currency-pricing' ),
 					$this->label()
 				)
 			);
@@ -911,7 +766,7 @@ final class Extended_Provider extends Abstract_Provider {
 			'mrnpe_provider_response',
 			$message ?: sprintf(
 				/* translators: %s: provider label. */
-				__( 'ساختار پاسخ %s معتبر یا سازگار نیست.', 'mrn-price-engine' ),
+				__( 'ساختار پاسخ %s معتبر یا سازگار نیست.', 'mrn-gold-currency-pricing' ),
 				$this->label()
 			)
 		);

@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -52,7 +52,7 @@ final class Currency_Converter {
 		$to   = $this->normalize_code( $to );
 
 		if ( ! $from || ! $to ) {
-			return new \WP_Error( 'mrnpe_currency_invalid', __( 'کد ارز مبدأ یا مقصد معتبر نیست.', 'mrn-price-engine' ) );
+			return new \WP_Error( 'mrnpe_currency_invalid', __( 'کد ارز مبدأ یا مقصد معتبر نیست.', 'mrn-gold-currency-pricing' ) );
 		}
 
 		if ( $from === $to ) {
@@ -121,7 +121,7 @@ final class Currency_Converter {
 			'mrnpe_conversion_missing',
 			sprintf(
 				/* translators: 1: source currency, 2: store currency. */
-				__( 'برای تبدیل %1$s به %2$s نرخ تبدیل محلی معتبری پیدا نشد.', 'mrn-price-engine' ),
+				__( 'برای تبدیل %1$s به %2$s نرخ تبدیل محلی معتبری پیدا نشد.', 'mrn-gold-currency-pricing' ),
 				$from,
 				$to
 			),

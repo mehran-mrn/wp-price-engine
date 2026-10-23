@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 require_once dirname( __DIR__ ) . '/includes/class-pricing-formula.php';
 
-use MRN\Price_Engine\Pricing_Formula;
+use MRNPE\Price_Engine\Pricing_Formula;
 
 function assert_close( float $expected, float $actual, string $message ): void {
 	if ( abs( $expected - $actual ) > 0.000001 ) {

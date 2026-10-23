@@ -1,13 +1,13 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
-	"name": "mrn-price-engine/price-board",
-	"version": "1.0.0",
-	"title": "تابلوی قیمت MRN",
+	"name": "mrnpe/price-board",
+	"version": "1.4.1",
+	"title": "تابلوی نرخ MRN",
 	"category": "widgets",
 	"icon": "chart-line",
 	"description": "نمایش زنده نرخ‌های محلی طلا، ارز، سکه و رمزارز.",
-	"textdomain": "mrn-price-engine",
+	"textdomain": "mrn-gold-currency-pricing",
 	"attributes": {
 		"title": { "type": "string", "default": "قیمت لحظه‌ای بازار" },
 		"assets": { "type": "string", "default": "" },

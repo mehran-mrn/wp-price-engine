@@ -5,10 +5,10 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
-use MRN\Price_Engine\Providers\Extended_Provider;
-use MRN\Price_Engine\Providers\HTML_Scraper_Provider;
+use MRNPE\Price_Engine\Providers\Extended_Provider;
+use MRNPE\Price_Engine\Providers\HTML_Scraper_Provider;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -43,19 +43,14 @@ final class Settings {
 	 */
 	public static function provider_defaults(): array {
 		$native = array(
-			'navasan'     => array(
-				'enabled'  => 'no',
-				'interval' => 10,
-				'api_key'  => '',
-			),
 			'coingecko'   => array(
-				'enabled'     => 'yes',
+				'enabled'     => 'no',
 				'interval'    => 10,
 				'api_key'     => '',
 				'vs_currency' => 'usd',
 			),
 			'frankfurter' => array(
-				'enabled'  => 'yes',
+				'enabled'  => 'no',
 				'interval' => 360,
 				'base'     => 'EUR',
 			),
@@ -78,7 +73,12 @@ final class Settings {
 			),
 			);
 
-		return array_merge( $native, Extended_Provider::default_settings(), HTML_Scraper_Provider::default_settings() );
+		$providers = array_merge( $native, Extended_Provider::default_settings(), HTML_Scraper_Provider::default_settings() );
+		foreach ( $providers as &$provider ) {
+			$provider['enabled'] = 'no';
+		}
+		unset( $provider );
+		return $providers;
 	}
 
 	/**

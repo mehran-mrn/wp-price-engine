@@ -1,7 +1,7 @@
 ( function () {
 	'use strict';
 
-	const config = window.mrnpeAdmin || {};
+	const config = window.mrnpe_admin || {};
 	const $ = function ( selector, root ) {
 		return ( root || document ).querySelector( selector );
 	};
@@ -90,7 +90,7 @@
 			const pairs = $$ ( '[data-shortcode-field]', builder ).map( function ( field ) {
 				return field.dataset.shortcodeField + '="' + field.value.replace( /"/g, '&quot;' ) + '"';
 			} );
-			output.textContent = '[mrn_price_board ' + pairs.join( ' ' ) + ']';
+			output.textContent = '[mrnpe_price_board ' + pairs.join( ' ' ) + ']';
 		};
 		$$ ( '[data-shortcode-field]', builder ).forEach( function ( field ) {
 			field.addEventListener( 'input', update );

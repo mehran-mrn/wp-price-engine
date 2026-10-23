@@ -5,15 +5,14 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
-use MRN\Price_Engine\Providers\Coingecko_Provider;
-use MRN\Price_Engine\Providers\Custom_JSON_Provider;
-use MRN\Price_Engine\Providers\Extended_Provider;
-use MRN\Price_Engine\Providers\Frankfurter_Provider;
-use MRN\Price_Engine\Providers\HTML_Scraper_Provider;
-use MRN\Price_Engine\Providers\Metals_Dev_Provider;
-use MRN\Price_Engine\Providers\Navasan_Provider;
+use MRNPE\Price_Engine\Providers\Coingecko_Provider;
+use MRNPE\Price_Engine\Providers\Custom_JSON_Provider;
+use MRNPE\Price_Engine\Providers\Extended_Provider;
+use MRNPE\Price_Engine\Providers\Frankfurter_Provider;
+use MRNPE\Price_Engine\Providers\HTML_Scraper_Provider;
+use MRNPE\Price_Engine\Providers\Metals_Dev_Provider;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -27,7 +26,6 @@ final class Provider_Manager {
 	) {
 		$providers = array_merge(
 			array(
-				new Navasan_Provider(),
 				new Coingecko_Provider(),
 				new Frankfurter_Provider(),
 				new Metals_Dev_Provider(),
@@ -55,7 +53,7 @@ final class Provider_Manager {
 		if ( get_transient( 'mrnpe_refresh_lock' ) ) {
 			return array(
 				'ok'      => false,
-				'message' => __( 'یک به‌روزرسانی دیگر در حال اجراست.', 'mrn-price-engine' ),
+				'message' => __( 'یک به‌روزرسانی دیگر در حال اجراست.', 'mrn-gold-currency-pricing' ),
 				'locked'  => true,
 			);
 		}

@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 

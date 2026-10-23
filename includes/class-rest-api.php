@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -31,7 +31,7 @@ final class REST_API {
 	 */
 	public function routes(): void {
 		register_rest_route(
-			'mrn-price-engine/v1',
+			'mrnpe/v1',
 			'/rates',
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
@@ -47,7 +47,7 @@ final class REST_API {
 		);
 
 		register_rest_route(
-			'mrn-price-engine/v1',
+			'mrnpe/v1',
 			'/refresh',
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
@@ -96,7 +96,12 @@ final class REST_API {
 				'updated_at'  => $latest,
 			)
 		);
-		$response->header( 'Cache-Control', 'public, max-age=20, stale-while-revalidate=60' );
+		$response->header(
+			'Cache-Control',
+			'yes' === Settings::get( 'public_rest_api', 'yes' )
+				? 'public, max-age=20, stale-while-revalidate=60'
+				: 'private, no-store, max-age=0'
+		);
 		return $response;
 	}
 

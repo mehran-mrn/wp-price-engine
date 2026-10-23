@@ -1,7 +1,7 @@
 ( function () {
 	'use strict';
 
-	const config = window.mrnpePublic || {};
+	const config = window.mrnpe_public || {};
 	const locale = config.locale || document.documentElement.lang || 'fa-IR';
 
 	function formatNumber( value, decimals ) {
@@ -64,7 +64,9 @@
 	async function refresh( board ) {
 		const symbols = board.dataset.symbols || '';
 		try {
-			const response = await window.fetch( config.endpoint + '?symbols=' + encodeURIComponent( symbols ), {
+			const url = new URL( config.endpoint, window.location.href );
+			url.searchParams.set( 'symbols', symbols );
+			const response = await window.fetch( url, {
 				headers: { Accept: 'application/json' },
 				credentials: 'same-origin'
 			} );

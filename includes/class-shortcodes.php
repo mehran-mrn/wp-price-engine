@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -19,8 +19,8 @@ final class Shortcodes {
 	 */
 	public function register(): void {
 		add_action( 'wp_enqueue_scripts', array( $this, 'register_assets' ) );
-		add_shortcode( 'mrn_price_board', array( $this, 'board' ) );
-		add_shortcode( 'mrn_rate', array( $this, 'single_rate' ) );
+		add_shortcode( 'mrnpe_price_board', array( $this, 'board' ) );
+		add_shortcode( 'mrnpe_rate', array( $this, 'single_rate' ) );
 	}
 
 	/**
@@ -33,13 +33,13 @@ final class Shortcodes {
 		wp_register_script( 'mrnpe-frontend', MRNPE_URL . 'assets/js/frontend.js', array(), MRNPE_VERSION, true );
 		wp_localize_script(
 			'mrnpe-frontend',
-			'mrnpePublic',
+			'mrnpe_public',
 			array(
-				'endpoint' => rest_url( 'mrn-price-engine/v1/rates' ),
+				'endpoint' => rest_url( 'mrnpe/v1/rates' ),
 				'locale'   => str_replace( '_', '-', get_locale() ),
 				'labels'   => array(
-					'updated' => __( 'به‌روزرسانی شد', 'mrn-price-engine' ),
-					'error'   => __( 'دریافت نرخ محلی ممکن نشد', 'mrn-price-engine' ),
+					'updated' => __( 'به‌روزرسانی شد', 'mrn-gold-currency-pricing' ),
+					'error'   => __( 'دریافت نرخ محلی ممکن نشد', 'mrn-gold-currency-pricing' ),
 				),
 			)
 		);
@@ -67,7 +67,7 @@ final class Shortcodes {
 				'title'        => '',
 			),
 			$atts,
-			'mrn_price_board'
+			'mrnpe_price_board'
 		);
 
 		$layout      = in_array( $atts['layout'], array( 'table', 'cards', 'ticker' ), true ) ? $atts['layout'] : 'table';
@@ -78,7 +78,7 @@ final class Shortcodes {
 
 		if ( ! $assets ) {
 			return current_user_can( 'manage_woocommerce' )
-				? '<div class="mrnpe-empty">' . esc_html__( 'هنوز نرخی برای نمایش تعریف نشده است.', 'mrn-price-engine' ) . '</div>'
+				? '<div class="mrnpe-empty">' . esc_html__( 'هنوز نرخی برای نمایش تعریف نشده است.', 'mrn-gold-currency-pricing' ) . '</div>'
 				: '';
 		}
 
@@ -101,10 +101,10 @@ final class Shortcodes {
 			<?php if ( $atts['title'] ) : ?>
 				<header class="mrnpe-board__header">
 					<div>
-						<span class="mrnpe-board__eyebrow"><?php esc_html_e( 'نبض بازار', 'mrn-price-engine' ); ?></span>
+						<span class="mrnpe-board__eyebrow"><?php esc_html_e( 'نبض بازار', 'mrn-gold-currency-pricing' ); ?></span>
 						<h2><?php echo esc_html( (string) $atts['title'] ); ?></h2>
 					</div>
-					<span class="mrnpe-board__live"><i></i><?php esc_html_e( 'داده محلی زنده', 'mrn-price-engine' ); ?></span>
+					<span class="mrnpe-board__live"><i></i><?php esc_html_e( 'داده محلی زنده', 'mrn-gold-currency-pricing' ); ?></span>
 				</header>
 			<?php endif; ?>
 
@@ -112,16 +112,16 @@ final class Shortcodes {
 				<div class="mrnpe-board__table-wrap">
 					<table class="mrnpe-board__table">
 						<thead><tr>
-							<th><?php esc_html_e( 'عنوان', 'mrn-price-engine' ); ?></th>
-							<th><?php esc_html_e( 'قیمت', 'mrn-price-engine' ); ?></th>
+							<th><?php esc_html_e( 'عنوان', 'mrn-gold-currency-pricing' ); ?></th>
+							<th><?php esc_html_e( 'قیمت', 'mrn-gold-currency-pricing' ); ?></th>
 							<?php
 							if ( 'yes' === $atts['show_change'] ) :
 								?>
-								<th><?php esc_html_e( 'تغییر', 'mrn-price-engine' ); ?></th><?php endif; ?>
+								<th><?php esc_html_e( 'تغییر', 'mrn-gold-currency-pricing' ); ?></th><?php endif; ?>
 							<?php
 							if ( 'yes' === $atts['show_updated'] ) :
 								?>
-								<th><?php esc_html_e( 'آخرین نرخ', 'mrn-price-engine' ); ?></th><?php endif; ?>
+								<th><?php esc_html_e( 'آخرین نرخ', 'mrn-gold-currency-pricing' ); ?></th><?php endif; ?>
 						</tr></thead>
 						<tbody>
 							<?php foreach ( $assets as $asset ) : ?>
@@ -157,7 +157,7 @@ final class Shortcodes {
 				'show_currency' => 'yes',
 			),
 			$atts,
-			'mrn_rate'
+			'mrnpe_rate'
 		);
 		$asset = $this->assets->find( (string) $atts['symbol'] );
 

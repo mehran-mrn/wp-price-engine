@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -33,6 +33,8 @@ final class Blocks {
 			true
 		);
 
+		wp_localize_script( 'mrnpe-block-editor', 'mrnpe_block', array( 'logoUrl' => MRNPE_URL . 'assets/images/logo.png' ) );
+
 		register_block_type(
 			MRNPE_PATH . 'blocks/price-board',
 			array(
@@ -49,7 +51,7 @@ final class Blocks {
 	 * @return string
 	 */
 	public function render( array $attributes ): string {
-		$shortcodes = new Shortcodes( mrn_price_engine()->assets() );
+		$shortcodes = new Shortcodes( mrnpe_plugin()->assets() );
 		return $shortcodes->board(
 			array(
 				'assets'       => (string) ( $attributes['assets'] ?? '' ),

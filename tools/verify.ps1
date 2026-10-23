@@ -6,7 +6,7 @@ $pluginRoot = Split-Path -Parent $PSScriptRoot
 $errors = [System.Collections.Generic.List[string]]::new()
 
 Write-Host ''
-Write-Host 'MRN Price Engine verification' -ForegroundColor Cyan
+Write-Host 'MRN Gold & Currency Pricing verification' -ForegroundColor Cyan
 Write-Host '============================='
 
 $phpFiles = @(Get-ChildItem -LiteralPath $pluginRoot -Filter '*.php' -File -Recurse)
@@ -49,7 +49,7 @@ $forbidden = @(
 	'eval\s*\(',
 	'base64_decode\s*\(',
 	'wp_remote_get\s*\(',
-	'http://api\.navasan'
+	'http://(?:api\.|[a-z0-9.-]+/api/)'
 )
 
 $sourceFiles = @(

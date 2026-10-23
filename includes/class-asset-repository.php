@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -22,9 +22,9 @@ final class Asset_Repository {
 		global $wpdb;
 
 		$table = $this->database->table( 'assets' );
-		$sql   = "SELECT * FROM {$table}";
+		$sql   = 'SELECT * FROM %i';
 		$where = array();
-		$bind  = array();
+		$bind  = array( $table );
 
 		if ( ! empty( $args['provider'] ) ) {
 			$where[] = 'provider = %s';
@@ -50,11 +50,7 @@ final class Asset_Repository {
 
 		$sql .= ' ORDER BY category ASC, id ASC';
 
-		if ( $bind ) {
-			$sql = $wpdb->prepare( $sql, $bind ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
-		}
-
-		return (array) $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+		return (array) $wpdb->get_results( $wpdb->prepare( $sql, $bind ) ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 	}
 
 	/**
@@ -68,11 +64,11 @@ final class Asset_Repository {
 		$table = $this->database->table( 'assets' );
 
 		if ( is_numeric( $identifier ) ) {
-			return $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table} WHERE id = %d", (int) $identifier ) );
+			return $wpdb->get_row( $wpdb->prepare( 'SELECT * FROM %i WHERE id = %d', $table, (int) $identifier ) );
 		}
 
 		return $wpdb->get_row(
-			$wpdb->prepare( "SELECT * FROM {$table} WHERE symbol = %s", $this->normalize_symbol( (string) $identifier ) )
+			$wpdb->prepare( 'SELECT * FROM %i WHERE symbol = %s', $table, $this->normalize_symbol( (string) $identifier ) )
 		);
 	}
 
@@ -214,8 +210,8 @@ final class Asset_Repository {
 				'category'       => 'metal',
 				'unit'           => 'گرم',
 				'quote_currency' => 'IRT',
-				'provider'       => 'navasan',
-				'provider_key'   => 'geram18',
+				'provider'       => 'manual',
+				'provider_key'   => '',
 				'multiplier'     => 1,
 			),
 			array(
@@ -224,8 +220,8 @@ final class Asset_Repository {
 				'category'       => 'currency',
 				'unit'           => 'دلار',
 				'quote_currency' => 'IRT',
-				'provider'       => 'navasan',
-				'provider_key'   => 'usd_sell',
+				'provider'       => 'manual',
+				'provider_key'   => '',
 				'multiplier'     => 1,
 			),
 			array(
@@ -234,8 +230,8 @@ final class Asset_Repository {
 				'category'       => 'coin',
 				'unit'           => 'عدد',
 				'quote_currency' => 'IRT',
-				'provider'       => 'navasan',
-				'provider_key'   => 'sekke_emami',
+				'provider'       => 'manual',
+				'provider_key'   => '',
 				'multiplier'     => 1,
 			),
 			array(
@@ -288,8 +284,8 @@ final class Asset_Repository {
 				'category'       => 'currency',
 				'unit'           => 'USDT',
 				'quote_currency' => 'IRT',
-				'provider'       => 'wallexir',
-				'provider_key'   => 'USDTTMN',
+				'provider'       => 'manual',
+				'provider_key'   => '',
 				'multiplier'     => 1,
 			),
 			array(

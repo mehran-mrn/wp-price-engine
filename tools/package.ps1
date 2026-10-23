@@ -1,55 +1,89 @@
 [CmdletBinding()]
 param(
-	[string]$OutputDirectory = (Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) 'dist')
+	[string]$Version = '',
+	[string]$Destination = ''
 )
 
 $ErrorActionPreference = 'Stop'
 $pluginRoot = Split-Path -Parent $PSScriptRoot
-$pluginName = Split-Path -Leaf $pluginRoot
-$version = '1.2.0'
-
-& (Join-Path $PSScriptRoot 'verify.ps1')
-if ($LASTEXITCODE -ne 0) {
-	throw 'Verification failed.'
+$header = Get-Content -LiteralPath (Join-Path $pluginRoot 'mrn-price-engine.php') -Raw
+$declaredVersion = [regex]::Match($header, 'Version:\s*([0-9.]+)').Groups[1].Value
+if (-not $Version) { $Version = $declaredVersion }
+if ($Version -ne $declaredVersion) { throw 'Package version must match the plugin header.' }
+$readme = Get-Content -LiteralPath (Join-Path $pluginRoot 'readme.txt') -Raw
+if ([regex]::Match($readme, 'Stable tag:\s*([0-9.]+)').Groups[1].Value -ne $Version) {
+	throw 'Stable tag must match the plugin version.'
 }
-
-New-Item -ItemType Directory -Force -Path $OutputDirectory | Out-Null
-$stageRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("mrnpe-package-" + [guid]::NewGuid().ToString('N'))
-New-Item -ItemType Directory -Force -Path $stageRoot | Out-Null
-$stagePlugin = Join-Path $stageRoot $pluginName
+if ([regex]::Match($header, "define\( 'MRNPE_VERSION', '([0-9.]+)' \)").Groups[1].Value -ne $Version) {
+	throw 'Runtime version must match the plugin header.'
+}
+if (-not $Destination) {
+	$Destination = Join-Path (Split-Path -Parent $pluginRoot) "dist/mrn-gold-currency-pricing-$Version.zip"
+}
+$destination = [System.IO.Path]::GetFullPath($Destination)
+New-Item -ItemType Directory -Path (Split-Path -Parent $destination) -Force | Out-Null
+$staging = Join-Path ([System.IO.Path]::GetTempPath()) ("mrnf-" + [guid]::NewGuid().ToString('N'))
+$packageRoot = Join-Path $staging 'mrn-gold-currency-pricing'
 
 try {
-	New-Item -ItemType Directory -Force -Path $stagePlugin | Out-Null
-	Get-ChildItem -LiteralPath $pluginRoot -Force |
-		Where-Object { $_.Name -notin @('tests', 'tools', '.git', '.codegraph') } |
-		Copy-Item -Destination $stagePlugin -Recurse
-
-	$zip = Join-Path $OutputDirectory ("$pluginName-$version.zip")
-	if (Test-Path -LiteralPath $zip) {
-		Remove-Item -LiteralPath $zip -Force
+	New-Item -ItemType Directory -Path $packageRoot -Force | Out-Null
+	# Explicit runtime allowlist excludes development files and credentials.
+	foreach ($item in @('mrn-price-engine.php', 'readme.txt', 'guide-fa.txt', 'LICENSE', 'NOTICE.txt', 'services.txt', 'uninstall.php', 'includes', 'assets', 'blocks')) {
+		Copy-Item -LiteralPath (Join-Path $pluginRoot $item) -Destination $packageRoot -Recurse -Force
 	}
 
-	# Compress-Archive writes Windows backslashes into ZIP entries. Some Linux
-	# unzip implementations treat those as literal filename characters, so use
-	# bsdtar to guarantee portable forward-slash entries for WordPress hosting.
-	& tar.exe -a -cf $zip -C $stageRoot $pluginName
-	if ($LASTEXITCODE -ne 0) {
-		throw 'Portable ZIP creation failed.'
+	Add-Type -AssemblyName System.IO.Compression
+	Add-Type -AssemblyName System.IO.Compression.FileSystem
+	if (Test-Path -LiteralPath $destination) {
+		Remove-Item -LiteralPath $destination -Force
 	}
 
-	$entries = @(tar.exe -tf $zip)
-	if ($entries.Count -eq 0 -or $entries | Where-Object { $_ -match '\\' }) {
-		throw 'Package contains invalid or non-portable paths.'
+	$archiveStream = [System.IO.File]::Open(
+		$destination,
+		[System.IO.FileMode]::CreateNew,
+		[System.IO.FileAccess]::ReadWrite,
+		[System.IO.FileShare]::None
+	)
+	try {
+		$archive = [System.IO.Compression.ZipArchive]::new(
+			$archiveStream,
+			[System.IO.Compression.ZipArchiveMode]::Create,
+			$false
+		)
+		try {
+			Get-ChildItem -LiteralPath $packageRoot -File -Recurse | ForEach-Object {
+				$relativePath = $_.FullName.Substring($staging.Length).TrimStart(
+					[System.IO.Path]::DirectorySeparatorChar,
+					[System.IO.Path]::AltDirectorySeparatorChar
+				)
+				$entryName = $relativePath.Replace('\', '/')
+				[System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
+					$archive,
+					$_.FullName,
+					$entryName,
+					[System.IO.Compression.CompressionLevel]::Optimal
+				) | Out-Null
+			}
+		}
+		finally {
+			$archive.Dispose()
+		}
+	}
+	finally {
+		$archiveStream.Dispose()
 	}
 
-	Write-Host "Package: $zip" -ForegroundColor Green
+	Write-Host "Created $destination" -ForegroundColor Green
 }
 finally {
-	if (Test-Path -LiteralPath $stageRoot) {
-		$resolvedStage = (Resolve-Path -LiteralPath $stageRoot).Path
-		$resolvedTemp = (Resolve-Path -LiteralPath ([System.IO.Path]::GetTempPath())).Path
-		if ($resolvedStage.StartsWith($resolvedTemp, [System.StringComparison]::OrdinalIgnoreCase)) {
-			Remove-Item -LiteralPath $resolvedStage -Recurse -Force
+	if (Test-Path -LiteralPath $staging) {
+		$resolvedStaging = [System.IO.Path]::GetFullPath($staging)
+		$expectedParent = [System.IO.Path]::GetFullPath([System.IO.Path]::GetTempPath()).TrimEnd('\', '/')
+		$actualParent = (Split-Path -Parent $resolvedStaging).TrimEnd('\', '/')
+		if (-not $actualParent.Equals($expectedParent, [System.StringComparison]::OrdinalIgnoreCase) -or
+			(Split-Path -Leaf $resolvedStaging) -notmatch '^mrnf-[a-f0-9]{32}$') {
+			throw 'Refusing to remove an unexpected staging directory.'
 		}
+		Remove-Item -LiteralPath $staging -Recurse -Force
 	}
 }

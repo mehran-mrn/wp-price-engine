@@ -5,10 +5,10 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine\Providers;
+namespace MRNPE\Price_Engine\Providers;
 
-use MRN\Price_Engine\Abstract_Provider;
-use MRN\Price_Engine\Settings;
+use MRNPE\Price_Engine\Abstract_Provider;
+use MRNPE\Price_Engine\Settings;
 
 defined( 'ABSPATH' ) || exit;
 

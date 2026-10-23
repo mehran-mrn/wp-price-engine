@@ -466,3 +466,4 @@
 	.mrnpe-reference { align-items: stretch; flex-direction: column; gap: 10px; }
 	.mrnpe-variation-grid { grid-template-columns: 1fr 1fr; }
 }
+.mrnpe-admin__brand > img { background: #fff; border-radius: 12px; box-sizing: border-box; padding: 7px; }

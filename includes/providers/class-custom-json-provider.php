@@ -5,10 +5,10 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine\Providers;
+namespace MRNPE\Price_Engine\Providers;
 
-use MRN\Price_Engine\Abstract_Provider;
-use MRN\Price_Engine\Settings;
+use MRNPE\Price_Engine\Abstract_Provider;
+use MRNPE\Price_Engine\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -18,7 +18,7 @@ final class Custom_JSON_Provider extends Abstract_Provider {
 	}
 
 	public function label(): string {
-		return __( 'JSON سفارشی', 'mrn-price-engine' );
+		return __( 'JSON سفارشی', 'mrn-gold-currency-pricing' );
 	}
 
 	public function fetch( array $assets ): array|\WP_Error {
@@ -26,7 +26,7 @@ final class Custom_JSON_Provider extends Abstract_Provider {
 		$url    = esc_url_raw( (string) ( $config['url'] ?? '' ), array( 'https' ) );
 
 		if ( ! $url ) {
-			return new \WP_Error( 'mrnpe_missing_url', __( 'نشانی HTTPS منبع JSON وارد نشده است.', 'mrn-price-engine' ) );
+			return new \WP_Error( 'mrnpe_missing_url', __( 'نشانی HTTPS منبع JSON وارد نشده است.', 'mrn-gold-currency-pricing' ) );
 		}
 
 		$headers = array();
@@ -46,7 +46,7 @@ final class Custom_JSON_Provider extends Abstract_Provider {
 
 		$items = $this->read_path( $response, (string) ( $config['items_path'] ?? '' ) );
 		if ( ! is_array( $items ) ) {
-			return new \WP_Error( 'mrnpe_json_path', __( 'مسیر آیتم‌ها در پاسخ JSON پیدا نشد.', 'mrn-price-engine' ) );
+			return new \WP_Error( 'mrnpe_json_path', __( 'مسیر آیتم‌ها در پاسخ JSON پیدا نشد.', 'mrn-gold-currency-pricing' ) );
 		}
 
 		$key_field   = sanitize_key( (string) ( $config['key_field'] ?? 'symbol' ) );

@@ -11,6 +11,8 @@
 	border-radius: 22px;
 	box-shadow: 0 18px 55px rgba(18, 24, 31, .08);
 	color: var(--mrnpe-text);
+	container-name: mrnpe-board;
+	container-type: inline-size;
 	font-family: inherit;
 	overflow: hidden;
 }
@@ -197,4 +199,8 @@
 	.mrnpe-board__header { align-items: flex-start; gap: 12px; padding: 18px; }
 	.mrnpe-board__table th,
 	.mrnpe-board__table td { padding: 13px 16px; }
+}
+
+@container mrnpe-board (max-width: 782px) {
+	.mrnpe-board__items { grid-template-columns: 1fr; }
 }

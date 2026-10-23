@@ -5,10 +5,10 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine\Providers;
+namespace MRNPE\Price_Engine\Providers;
 
-use MRN\Price_Engine\Abstract_Provider;
-use MRN\Price_Engine\HTML_Rate_Parser;
+use MRNPE\Price_Engine\Abstract_Provider;
+use MRNPE\Price_Engine\HTML_Rate_Parser;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -114,7 +114,7 @@ final class HTML_Scraper_Provider extends Abstract_Provider {
 			'milli_scraper'     => $this->fetch_milli( $keys ),
 			'melligold_scraper' => $this->fetch_melligold( $keys ),
 			'tgju_scraper'      => $this->fetch_tgju( $keys ),
-			default             => new \WP_Error( 'mrnpe_scraper_unknown', __( 'منبع scraping ناشناخته است.', 'mrn-price-engine' ) ),
+			default             => new \WP_Error( 'mrnpe_scraper_unknown', __( 'منبع scraping ناشناخته است.', 'mrn-gold-currency-pricing' ) ),
 		};
 	}
 
@@ -253,7 +253,7 @@ final class HTML_Scraper_Provider extends Abstract_Provider {
 			'mrnpe_scraper_parse_failed',
 			sprintf(
 				/* translators: 1: source label, 2: optional parser detail. */
-				__( 'ساختار HTML منبع %1$s قابل تشخیص نبود. نرخ قبلی حفظ شد. %2$s', 'mrn-price-engine' ),
+				__( 'ساختار HTML منبع %1$s قابل تشخیص نبود. نرخ قبلی حفظ شد. %2$s', 'mrn-gold-currency-pricing' ),
 				$source,
 				$detail
 			)

@@ -1,0 +1,7 @@
+MRN Gold & Currency Pricing
+Copyright (C) 2026 Mehran Marandi
+Distributed under GNU GPL version 3 or later.
+
+Provider integration references: MNS Navasan, Hooman Mansuri.
+https://hoomanmns.com/
+Reference plugin license: GPL version 3 or later.

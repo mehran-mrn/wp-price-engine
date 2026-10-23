@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -18,7 +18,7 @@ final class Activator {
 	public static function activate(): void {
 		if ( version_compare( PHP_VERSION, '8.1', '<' ) ) {
 			deactivate_plugins( plugin_basename( MRNPE_FILE ) );
-			wp_die( esc_html__( 'MRN Price Engine به PHP 8.1 یا جدیدتر نیاز دارد.', 'mrn-price-engine' ) );
+			wp_die( esc_html__( 'MRN Gold & Currency Pricing به PHP 8.1 یا جدیدتر نیاز دارد.', 'mrn-gold-currency-pricing' ) );
 		}
 
 		$database = new Database();
@@ -33,6 +33,7 @@ final class Activator {
 		}
 
 		$assets = new Asset_Repository( $database );
+		self::retire_providers( $assets );
 		$assets->seed_defaults();
 		$assets->seed_upgrade_assets();
 
@@ -44,7 +45,7 @@ final class Activator {
 	}
 
 	/**
-	 * Apply additive upgrades for already-active installations.
+	 * Apply upgrades for already-active installations.
 	 *
 	 * @return void
 	 */
@@ -64,10 +65,41 @@ final class Activator {
 		update_option( 'mrnpe_providers', $providers, false );
 
 		$assets = new Asset_Repository( $database );
+		self::retire_providers( $assets );
 		$assets->seed_upgrade_assets();
 
 		update_option( 'mrnpe_db_version', Database::VERSION, false );
 		update_option( 'mrnpe_plugin_version', MRNPE_VERSION, false );
+	}
+
+	/**
+	 * Remove retired connections while retaining merchant rate records.
+	 */
+	private static function retire_providers( Asset_Repository $assets ): void {
+		$retired = array( 'navasan', 'apimaster', 'nerkhapi', 'ratesbox', 'sourcearena', 'sunnyweb', 'sunnywebnew', 'sunnywebshabakeh', 'wallexir' );
+		foreach ( array( 'mrnpe_providers', 'mrnpe_provider_state' ) as $option ) {
+			$saved   = (array) get_option( $option, array() );
+			$updated = array_diff_key( $saved, array_flip( $retired ) );
+			if ( $saved !== $updated ) {
+				update_option( $option, $updated, false );
+			}
+		}
+
+		$migrated = 0;
+		foreach ( $assets->all() as $asset ) {
+			if ( ! in_array( $asset->provider, $retired, true ) ) {
+				continue;
+			}
+			$data                 = (array) $asset;
+			$data['provider']     = 'manual';
+			$data['provider_key'] = '';
+			$data['meta']         = json_decode( (string) $asset->meta, true ) ?: array();
+			$assets->save( $data, (int) $asset->id );
+			++$migrated;
+		}
+		if ( $migrated ) {
+			update_option( 'mrnpe_provider_migration_count', $migrated, false );
+		}
 	}
 
 	/**

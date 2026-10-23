@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,7 +25,7 @@ abstract class Abstract_Provider implements Provider_Interface {
 				'Accept'          => 'text/html,application/xhtml+xml',
 				'Accept-Language' => 'fa-IR,fa;q=0.9,en;q=0.5',
 				'Cache-Control'   => 'no-cache',
-				'User-Agent'      => 'Mozilla/5.0 (compatible; MRNPriceBot/' . MRNPE_VERSION . '; +https://github.com/mehran-mrn/wp-price-engine)',
+				'User-Agent'      => 'MRN-Gold-Currency-Pricing/' . MRNPE_VERSION . ' (+https://mrnwp.ir/mrnnerkh)',
 			),
 		);
 		$response = wp_safe_remote_get( $url, $args );
@@ -58,7 +58,7 @@ abstract class Abstract_Provider implements Provider_Interface {
 				'mrnpe_http_error',
 				sprintf(
 					/* translators: %d: HTTP response status. */
-					__( 'صفحه منبع با وضعیت HTTP %d پاسخ داد.', 'mrn-price-engine' ),
+					__( 'صفحه منبع با وضعیت HTTP %d پاسخ داد.', 'mrn-gold-currency-pricing' ),
 					$code
 				),
 				array( 'status' => $code )
@@ -67,7 +67,7 @@ abstract class Abstract_Provider implements Provider_Interface {
 
 		$body = wp_remote_retrieve_body( $response );
 		if ( '' === trim( $body ) ) {
-			return new \WP_Error( 'mrnpe_empty_html', __( 'صفحه منبع بدون محتوا بود.', 'mrn-price-engine' ) );
+			return new \WP_Error( 'mrnpe_empty_html', __( 'صفحه منبع بدون محتوا بود.', 'mrn-gold-currency-pricing' ) );
 		}
 
 		return $body;
@@ -85,11 +85,12 @@ abstract class Abstract_Provider implements Provider_Interface {
 			$url,
 			array(
 				'timeout'     => max( 3, min( 30, (int) Settings::get( 'request_timeout', 12 ) ) ),
-				'redirection' => 3,
+				'redirection' => 0,
+				'limit_response_size' => 3 * MB_IN_BYTES,
 				'headers'     => array_merge(
 					array(
 						'Accept'     => 'application/json',
-						'User-Agent' => 'MRN-Price-Engine/' . MRNPE_VERSION . '; ' . home_url( '/' ),
+						'User-Agent' => 'MRN-Gold-Currency-Pricing/' . MRNPE_VERSION,
 					),
 					$headers
 				),
@@ -106,7 +107,7 @@ abstract class Abstract_Provider implements Provider_Interface {
 				'mrnpe_http_error',
 				sprintf(
 					/* translators: %d: HTTP response status. */
-					__( 'منبع داده با وضعیت HTTP %d پاسخ داد.', 'mrn-price-engine' ),
+					__( 'منبع داده با وضعیت HTTP %d پاسخ داد.', 'mrn-gold-currency-pricing' ),
 					$code
 				),
 				array( 'status' => $code )
@@ -115,7 +116,7 @@ abstract class Abstract_Provider implements Provider_Interface {
 
 		$body = json_decode( wp_remote_retrieve_body( $response ), true );
 		if ( JSON_ERROR_NONE !== json_last_error() || ! is_array( $body ) ) {
-			return new \WP_Error( 'mrnpe_invalid_json', __( 'پاسخ منبع داده JSON معتبر نیست.', 'mrn-price-engine' ) );
+			return new \WP_Error( 'mrnpe_invalid_json', __( 'پاسخ منبع داده JSON معتبر نیست.', 'mrn-gold-currency-pricing' ) );
 		}
 
 		return $body;

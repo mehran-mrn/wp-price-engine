@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -40,7 +40,7 @@ final class Scheduler {
 			'interval' => $minutes * MINUTE_IN_SECONDS,
 			'display'  => sprintf(
 				/* translators: %d: minutes. */
-				_n( 'هر %d دقیقه', 'هر %d دقیقه', $minutes, 'mrn-price-engine' ),
+				_n( 'هر %d دقیقه', 'هر %d دقیقه', $minutes, 'mrn-gold-currency-pricing' ),
 				$minutes
 			),
 		);
@@ -79,7 +79,7 @@ final class Scheduler {
 		}
 
 		if ( function_exists( 'as_enqueue_async_action' ) ) {
-			as_enqueue_async_action( 'mrnpe_recalculate_products', array( 0 ), 'mrn-price-engine', true );
+			as_enqueue_async_action( 'mrnpe_recalculate_products', array( 0 ), 'mrnpe-pricing', true );
 			return;
 		}
 
@@ -105,7 +105,7 @@ final class Scheduler {
 			$next_offset = $offset + $result['processed'];
 
 			if ( function_exists( 'as_enqueue_async_action' ) ) {
-				as_enqueue_async_action( 'mrnpe_recalculate_products', array( $next_offset ), 'mrn-price-engine', true );
+				as_enqueue_async_action( 'mrnpe_recalculate_products', array( $next_offset ), 'mrnpe-pricing', true );
 			} else {
 				wp_schedule_single_event( time() + 5, 'mrnpe_recalculate_products', array( $next_offset ) );
 			}

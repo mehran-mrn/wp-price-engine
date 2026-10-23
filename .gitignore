@@ -19,3 +19,8 @@ Thumbs.db
 /node_modules/
 /.phpunit.cache/
 /.phpunit.result.cache
+
+/docs/ai/
+
+__pycache__/
+*.pyc

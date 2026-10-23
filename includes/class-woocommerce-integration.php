@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -48,7 +48,7 @@ final class WooCommerce_Integration {
 	 */
 	public function product_tab( array $tabs ): array {
 		$tabs['mrnpe'] = array(
-			'label'    => __( 'قیمت‌گذاری پویا', 'mrn-price-engine' ),
+			'label'    => __( 'قیمت‌گذاری پویا', 'mrn-gold-currency-pricing' ),
 			'target'   => 'mrnpe_product_data',
 			'class'    => array( 'show_if_simple', 'show_if_external' ),
 			'priority' => 61,
@@ -67,23 +67,23 @@ final class WooCommerce_Integration {
 		?>
 		<div id="mrnpe_product_data" class="panel woocommerce_options_panel hidden mrnpe-product-panel">
 			<div class="mrnpe-product-intro">
-				<strong><?php esc_html_e( 'قیمت زنده، بدون درخواست زنده', 'mrn-price-engine' ); ?></strong>
-				<span><?php esc_html_e( 'قیمت از آخرین نرخ معتبر محلی محاسبه و برای مرتب‌سازی و فیلتر ووکامرس ذخیره می‌شود.', 'mrn-price-engine' ); ?></span>
+				<strong><?php esc_html_e( 'قیمت زنده، بدون درخواست زنده', 'mrn-gold-currency-pricing' ); ?></strong>
+				<span><?php esc_html_e( 'قیمت از آخرین نرخ معتبر محلی محاسبه و برای مرتب‌سازی و فیلتر ووکامرس ذخیره می‌شود.', 'mrn-gold-currency-pricing' ); ?></span>
 			</div>
 			<?php
 			woocommerce_wp_checkbox(
 				array(
 					'id'          => '_mrnpe_enabled',
-					'label'       => __( 'فعال‌سازی قیمت پویا', 'mrn-price-engine' ),
+					'label'       => __( 'فعال‌سازی قیمت پویا', 'mrn-gold-currency-pricing' ),
 					'value'       => $config['enabled'] ? 'yes' : 'no',
-					'description' => __( 'قیمت‌های ثابت محصول با فرمول زیر جایگزین می‌شوند.', 'mrn-price-engine' ),
+					'description' => __( 'قیمت‌های ثابت محصول با فرمول زیر جایگزین می‌شوند.', 'mrn-gold-currency-pricing' ),
 				)
 			);
 			$this->render_formula_fields( (int) $post->ID, '', $config );
 			?>
 			<div class="mrnpe-formula-preview" data-mrnpe-preview>
-				<span><?php esc_html_e( 'پیش‌نمایش فرمول', 'mrn-price-engine' ); ?></span>
-				<strong><?php esc_html_e( 'پس از انتخاب نرخ نمایش داده می‌شود', 'mrn-price-engine' ); ?></strong>
+				<span><?php esc_html_e( 'پیش‌نمایش فرمول', 'mrn-gold-currency-pricing' ); ?></span>
+				<strong><?php esc_html_e( 'پس از انتخاب نرخ نمایش داده می‌شود', 'mrn-gold-currency-pricing' ); ?></strong>
 			</div>
 		</div>
 		<?php
@@ -103,7 +103,7 @@ final class WooCommerce_Integration {
 		<div class="mrnpe-variation-fields form-row form-row-full">
 			<label>
 				<input type="checkbox" name="mrnpe_variation[<?php echo esc_attr( (string) $loop ); ?>][enabled]" value="yes" <?php checked( $config['enabled'] ); ?>>
-				<?php esc_html_e( 'قیمت‌گذاری پویای این متغیر', 'mrn-price-engine' ); ?>
+				<?php esc_html_e( 'قیمت‌گذاری پویای این متغیر', 'mrn-gold-currency-pricing' ); ?>
 			</label>
 			<?php $this->render_variation_formula_fields( $loop, $config ); ?>
 		</div>
@@ -119,54 +119,54 @@ final class WooCommerce_Integration {
 	 * @return void
 	 */
 	private function render_formula_fields( int $product_id, string $prefix, array $config ): void {
-		$options = array( '' => __( 'یک نرخ را انتخاب کنید…', 'mrn-price-engine' ) );
+		$options = array( '' => __( 'یک نرخ را انتخاب کنید…', 'mrn-gold-currency-pricing' ) );
 		foreach ( $this->assets->all() as $asset ) {
 			$rate_label = null !== $asset->value
 				? number_format_i18n( (float) $asset->value, wc_get_price_decimals() ) . ' ' . strtoupper( (string) $asset->quote_currency )
-				: __( 'بدون نرخ', 'mrn-price-engine' );
+				: __( 'بدون نرخ', 'mrn-gold-currency-pricing' );
 			$options[ (string) $asset->id ] = sprintf( '%s — %s (%s)', $asset->name, $asset->symbol, $rate_label );
 		}
 
 		woocommerce_wp_select(
 			array(
 				'id'          => '_mrnpe_asset_id',
-				'label'       => __( 'نرخ مبنا', 'mrn-price-engine' ),
+				'label'       => __( 'نرخ مبنا', 'mrn-gold-currency-pricing' ),
 				'value'       => $config['asset_id'],
 				'options'     => $options,
 				'desc_tip'    => true,
-				'description' => __( 'مثلاً قیمت هر گرم طلای ۱۸ عیار.', 'mrn-price-engine' ),
+				'description' => __( 'مثلاً قیمت هر گرم طلای ۱۸ عیار.', 'mrn-gold-currency-pricing' ),
 			)
 		);
 		woocommerce_wp_text_input(
 			array(
 				'id'                => '_mrnpe_quantity',
-				'label'             => __( 'مقدار / وزن', 'mrn-price-engine' ),
+				'label'             => __( 'مقدار / وزن', 'mrn-gold-currency-pricing' ),
 				'value'             => $config['quantity'],
 				'type'              => 'number',
 				'custom_attributes' => array(
 					'min'  => '0',
 					'step' => '0.000001',
 				),
-				'description'       => __( 'مثال: 1.43 گرم', 'mrn-price-engine' ),
+				'description'       => __( 'مثال: 1.43 گرم', 'mrn-gold-currency-pricing' ),
 			)
 		);
 		woocommerce_wp_text_input(
 			array(
 				'id'                => '_mrnpe_multiplier',
-				'label'             => __( 'ضریب محصول', 'mrn-price-engine' ),
+				'label'             => __( 'ضریب محصول', 'mrn-gold-currency-pricing' ),
 				'value'             => $config['multiplier'],
 				'type'              => 'number',
 				'custom_attributes' => array(
 					'min'  => '0',
 					'step' => '0.000001',
 				),
-				'description'       => __( 'برای عیار، پرت یا تبدیل واحد؛ مقدار عادی ۱ است.', 'mrn-price-engine' ),
+				'description'       => __( 'برای عیار، پرت یا تبدیل واحد؛ مقدار عادی ۱ است.', 'mrn-gold-currency-pricing' ),
 			)
 		);
 		woocommerce_wp_text_input(
 			array(
 				'id'                => '_mrnpe_percentage',
-				'label'             => __( 'افزایش درصدی', 'mrn-price-engine' ),
+				'label'             => __( 'افزایش درصدی', 'mrn-gold-currency-pricing' ),
 				'value'             => $config['percentage'],
 				'type'              => 'number',
 				'custom_attributes' => array( 'step' => '0.01' ),
@@ -176,7 +176,7 @@ final class WooCommerce_Integration {
 		woocommerce_wp_text_input(
 			array(
 				'id'                => '_mrnpe_fixed',
-				'label'             => __( 'مبلغ ثابت', 'mrn-price-engine' ),
+				'label'             => __( 'مبلغ ثابت', 'mrn-gold-currency-pricing' ),
 				'value'             => $config['fixed'],
 				'type'              => 'number',
 				'custom_attributes' => array( 'step' => '1' ),
@@ -186,39 +186,39 @@ final class WooCommerce_Integration {
 		woocommerce_wp_text_input(
 			array(
 				'id'                => '_mrnpe_rounding_step',
-				'label'             => __( 'گام گرد کردن', 'mrn-price-engine' ),
+				'label'             => __( 'گام گرد کردن', 'mrn-gold-currency-pricing' ),
 				'value'             => $config['rounding_step'],
 				'type'              => 'number',
 				'custom_attributes' => array(
 					'min'  => '0',
 					'step' => '1',
 				),
-				'description'       => __( 'مثلاً ۱۰۰۰؛ صفر یعنی بدون گرد کردن.', 'mrn-price-engine' ),
+				'description'       => __( 'مثلاً ۱۰۰۰؛ صفر یعنی بدون گرد کردن.', 'mrn-gold-currency-pricing' ),
 			)
 		);
 		woocommerce_wp_select(
 			array(
 				'id'      => '_mrnpe_rounding_mode',
-				'label'   => __( 'روش گرد کردن', 'mrn-price-engine' ),
+				'label'   => __( 'روش گرد کردن', 'mrn-gold-currency-pricing' ),
 				'value'   => $config['rounding_mode'],
 				'options' => array(
-					'nearest' => __( 'نزدیک‌ترین', 'mrn-price-engine' ),
-					'up'      => __( 'همیشه رو به بالا', 'mrn-price-engine' ),
-					'down'    => __( 'همیشه رو به پایین', 'mrn-price-engine' ),
+					'nearest' => __( 'نزدیک‌ترین', 'mrn-gold-currency-pricing' ),
+					'up'      => __( 'همیشه رو به بالا', 'mrn-gold-currency-pricing' ),
+					'down'    => __( 'همیشه رو به پایین', 'mrn-gold-currency-pricing' ),
 				),
 			)
 		);
 		woocommerce_wp_checkbox(
 			array(
 				'id'    => '_mrnpe_sale_enabled',
-				'label' => __( 'قیمت فروش ویژه پویا', 'mrn-price-engine' ),
+				'label' => __( 'قیمت فروش ویژه پویا', 'mrn-gold-currency-pricing' ),
 				'value' => $config['sale_enabled'] ? 'yes' : 'no',
 			)
 		);
 		woocommerce_wp_text_input(
 			array(
 				'id'                => '_mrnpe_sale_percentage',
-				'label'             => __( 'تخفیف درصدی', 'mrn-price-engine' ),
+				'label'             => __( 'تخفیف درصدی', 'mrn-gold-currency-pricing' ),
 				'value'             => $config['sale_percentage'],
 				'type'              => 'number',
 				'custom_attributes' => array(
@@ -232,7 +232,7 @@ final class WooCommerce_Integration {
 		woocommerce_wp_text_input(
 			array(
 				'id'                => '_mrnpe_sale_fixed',
-				'label'             => __( 'تخفیف ثابت', 'mrn-price-engine' ),
+				'label'             => __( 'تخفیف ثابت', 'mrn-gold-currency-pricing' ),
 				'value'             => $config['sale_fixed'],
 				'type'              => 'number',
 				'custom_attributes' => array(
@@ -255,9 +255,9 @@ final class WooCommerce_Integration {
 		$name = 'mrnpe_variation[' . $loop . ']';
 		?>
 		<div class="mrnpe-variation-grid">
-			<label><?php esc_html_e( 'نرخ مبنا', 'mrn-price-engine' ); ?>
+			<label><?php esc_html_e( 'نرخ مبنا', 'mrn-gold-currency-pricing' ); ?>
 				<select name="<?php echo esc_attr( $name . '[asset_id]' ); ?>">
-					<option value=""><?php esc_html_e( 'انتخاب نرخ…', 'mrn-price-engine' ); ?></option>
+					<option value=""><?php esc_html_e( 'انتخاب نرخ…', 'mrn-gold-currency-pricing' ); ?></option>
 					<?php foreach ( $this->assets->all() as $asset ) : ?>
 						<option value="<?php echo esc_attr( (string) $asset->id ); ?>" <?php selected( $config['asset_id'], $asset->id ); ?>><?php echo esc_html( $asset->name . ' — ' . $asset->symbol ); ?></option>
 					<?php endforeach; ?>
@@ -265,13 +265,13 @@ final class WooCommerce_Integration {
 			</label>
 			<?php
 			$fields = array(
-				'quantity'        => __( 'مقدار / وزن', 'mrn-price-engine' ),
-				'multiplier'      => __( 'ضریب', 'mrn-price-engine' ),
-				'percentage'      => __( 'افزایش %', 'mrn-price-engine' ),
-				'fixed'           => __( 'مبلغ ثابت', 'mrn-price-engine' ),
-				'rounding_step'   => __( 'گام گرد کردن', 'mrn-price-engine' ),
-				'sale_percentage' => __( 'تخفیف %', 'mrn-price-engine' ),
-				'sale_fixed'      => __( 'تخفیف ثابت', 'mrn-price-engine' ),
+				'quantity'        => __( 'مقدار / وزن', 'mrn-gold-currency-pricing' ),
+				'multiplier'      => __( 'ضریب', 'mrn-gold-currency-pricing' ),
+				'percentage'      => __( 'افزایش %', 'mrn-gold-currency-pricing' ),
+				'fixed'           => __( 'مبلغ ثابت', 'mrn-gold-currency-pricing' ),
+				'rounding_step'   => __( 'گام گرد کردن', 'mrn-gold-currency-pricing' ),
+				'sale_percentage' => __( 'تخفیف %', 'mrn-gold-currency-pricing' ),
+				'sale_fixed'      => __( 'تخفیف ثابت', 'mrn-gold-currency-pricing' ),
 			);
 			foreach ( $fields as $key => $label ) :
 				?>
@@ -279,14 +279,14 @@ final class WooCommerce_Integration {
 					<input type="number" step="0.000001" name="<?php echo esc_attr( $name . '[' . $key . ']' ); ?>" value="<?php echo esc_attr( (string) $config[ $key ] ); ?>">
 				</label>
 			<?php endforeach; ?>
-			<label><?php esc_html_e( 'گرد کردن', 'mrn-price-engine' ); ?>
+			<label><?php esc_html_e( 'گرد کردن', 'mrn-gold-currency-pricing' ); ?>
 				<select name="<?php echo esc_attr( $name . '[rounding_mode]' ); ?>">
-					<option value="nearest" <?php selected( $config['rounding_mode'], 'nearest' ); ?>><?php esc_html_e( 'نزدیک‌ترین', 'mrn-price-engine' ); ?></option>
-					<option value="up" <?php selected( $config['rounding_mode'], 'up' ); ?>><?php esc_html_e( 'رو به بالا', 'mrn-price-engine' ); ?></option>
-					<option value="down" <?php selected( $config['rounding_mode'], 'down' ); ?>><?php esc_html_e( 'رو به پایین', 'mrn-price-engine' ); ?></option>
+					<option value="nearest" <?php selected( $config['rounding_mode'], 'nearest' ); ?>><?php esc_html_e( 'نزدیک‌ترین', 'mrn-gold-currency-pricing' ); ?></option>
+					<option value="up" <?php selected( $config['rounding_mode'], 'up' ); ?>><?php esc_html_e( 'رو به بالا', 'mrn-gold-currency-pricing' ); ?></option>
+					<option value="down" <?php selected( $config['rounding_mode'], 'down' ); ?>><?php esc_html_e( 'رو به پایین', 'mrn-gold-currency-pricing' ); ?></option>
 				</select>
 			</label>
-			<label class="mrnpe-check"><input type="checkbox" name="<?php echo esc_attr( $name . '[sale_enabled]' ); ?>" value="yes" <?php checked( $config['sale_enabled'] ); ?>> <?php esc_html_e( 'فروش ویژه', 'mrn-price-engine' ); ?></label>
+			<label class="mrnpe-check"><input type="checkbox" name="<?php echo esc_attr( $name . '[sale_enabled]' ); ?>" value="yes" <?php checked( $config['sale_enabled'] ); ?>> <?php esc_html_e( 'فروش ویژه', 'mrn-gold-currency-pricing' ); ?></label>
 		</div>
 		<?php
 	}
@@ -476,7 +476,7 @@ final class WooCommerce_Integration {
 		$snapshot = $values['mrnpe_snapshot'];
 		$item->add_meta_data( '_mrnpe_rate_snapshot', wp_json_encode( $snapshot, JSON_UNESCAPED_UNICODE ), true );
 		$item->add_meta_data(
-			__( 'مبنای قیمت', 'mrn-price-engine' ),
+			__( 'مبنای قیمت', 'mrn-gold-currency-pricing' ),
 			sprintf(
 				'%1$s — %2$s %3$s → %4$s × %5$s',
 				$snapshot['asset_name'],
@@ -520,7 +520,7 @@ final class WooCommerce_Integration {
 					echo wp_kses_post(
 						sprintf(
 							/* translators: 1: quantity, 2: unit, 3: last update. */
-							__( '%1$s %2$s بر پایه آخرین نرخ محلی • به‌روزرسانی %3$s', 'mrn-price-engine' ),
+							__( '%1$s %2$s بر پایه آخرین نرخ محلی • به‌روزرسانی %3$s', 'mrn-gold-currency-pricing' ),
 							wc_format_localized_decimal( $result['quantity'] ),
 							esc_html( $result['asset']->unit ),
 							esc_html( human_time_diff( strtotime( $result['asset']->updated_at . ' UTC' ), time() ) . ' پیش' )

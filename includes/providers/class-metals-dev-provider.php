@@ -5,10 +5,10 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine\Providers;
+namespace MRNPE\Price_Engine\Providers;
 
-use MRN\Price_Engine\Abstract_Provider;
-use MRN\Price_Engine\Settings;
+use MRNPE\Price_Engine\Abstract_Provider;
+use MRNPE\Price_Engine\Settings;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -26,7 +26,7 @@ final class Metals_Dev_Provider extends Abstract_Provider {
 		$key    = trim( (string) ( $config['api_key'] ?? '' ) );
 
 		if ( '' === $key ) {
-			return new \WP_Error( 'mrnpe_missing_key', __( 'کلید API Metals.Dev وارد نشده است.', 'mrn-price-engine' ) );
+			return new \WP_Error( 'mrnpe_missing_key', __( 'کلید API Metals.Dev وارد نشده است.', 'mrn-gold-currency-pricing' ) );
 		}
 
 		$response = $this->get_json(
@@ -45,7 +45,7 @@ final class Metals_Dev_Provider extends Abstract_Provider {
 		}
 
 		if ( isset( $response['status'] ) && 'success' !== $response['status'] ) {
-			return new \WP_Error( 'mrnpe_provider_error', sanitize_text_field( (string) ( $response['error_message'] ?? __( 'خطای نامشخص Metals.Dev', 'mrn-price-engine' ) ) ) );
+			return new \WP_Error( 'mrnpe_provider_error', sanitize_text_field( (string) ( $response['error_message'] ?? __( 'خطای نامشخص Metals.Dev', 'mrn-gold-currency-pricing' ) ) ) );
 		}
 
 		$values = isset( $response['metals'] ) && is_array( $response['metals'] ) ? $response['metals'] : array();

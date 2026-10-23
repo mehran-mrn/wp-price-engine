@@ -1,0 +1,181 @@
+MRN Gold & Currency Pricing - External rate services
+
+Requests occur only during scheduled refreshes or an administrator-triggered refresh, and only for an enabled provider with assigned assets. This timing applies to every service below. External providers are disabled on fresh installations. Front-end rate boards and product calculations use locally stored rates; they do not contact the providers directly.
+
+Every contacted provider receives the web server's IP address, the requested URL and HTTP headers, including the plugin name/version User-Agent. HTML requests also include language and cache-control headers, and may return a source cookie when retrying a same-page redirect. The User-Agent does not contain the store URL. The adapters do not send customer names, email addresses, billing details, cart contents or order payloads. Configured credentials are sent only to the selected service as described below.
+
+An API subscription and permission to display, retain or redistribute its data are separate matters. No rate-service account, subscription or third-party data licence is included. Consult the selected provider's terms, including plan-specific conditions.
+
+CoinGecko
+  Destination: api.coingecko.com
+  Purpose: Cryptocurrency prices.
+  Data sent: Configured coin IDs, quote currency, change/timestamp flags and the optional Demo API key in a request header.
+  Terms: https://www.coingecko.com/en/api_terms
+  Privacy: https://www.coingecko.com/en/privacy
+
+Frankfurter
+  Destination: api.frankfurter.dev
+  Purpose: International reference exchange rates; this is not the Iranian open-market exchange rate.
+  Data sent: The configured base currency and selected target currency codes; no API key.
+  Terms: https://frankfurter.dev/license/
+  Privacy: https://frankfurter.dev/#faq
+  The FAQ contains the API privacy policy under "What is the privacy policy of the API?".
+
+Metals.Dev
+  Destination: api.metals.dev
+  Purpose: Precious-metal prices.
+  Data sent: The configured API key, quote currency and weight unit in query parameters.
+  Terms: https://metals.dev/policy/terms
+  Privacy: https://metals.dev/policy/privacy
+
+Nobitex
+  Destination: apiv2.nobitex.ir
+  Purpose: Public cryptocurrency market prices.
+  Data sent: A request for the public market ticker list; no account credentials or customer information.
+  Terms: https://nobitex.ir/policies/?tab=terms
+  Privacy: https://nobitex.ir/policies/?tab=privacy
+
+Bitpin
+  Destination: api.bitpin.ir
+  Purpose: Public cryptocurrency market prices.
+  Data sent: A request for the public market list; no account credentials or customer information.
+  Terms: https://bitpin.ir/rules/
+  Privacy: https://bitpin.ir/rules/
+  The combined document includes section 4, protection of privacy and user rights.
+
+Exir
+  Destination: api.exir.io
+  Purpose: Public cryptocurrency market prices.
+  Data sent: A request for the public ticker list; no account credentials or customer information.
+  Terms: https://www.exir.io/terms_privacy/
+  Privacy: https://www.exir.io/terms_privacy/
+  The combined terms include a personal-information protection section.
+
+TetherLand
+  Destination: api.tetherland.com
+  Purpose: Public cryptocurrency prices.
+  Data sent: A request for the public currency list; no account credentials or customer information.
+  Terms: https://tetherland.com/terms/
+  Privacy: https://tetherland.com/terms/
+  The combined document includes privacy and confidentiality provisions.
+
+Ramzinex
+  Destination: publicapi.ramzinex.com
+  Purpose: Public cryptocurrency market prices.
+  Data sent: A request for the public exchange-price list; no account credentials or customer information.
+  Terms: https://ramzinex.ir/info/terms/
+  Privacy: https://ramzinex.ir/info/terms/
+  The combined document includes protection of personal information.
+
+ArzPaya
+  Destination: api.arzpaya.com
+  Purpose: Public cryptocurrency market prices.
+  Data sent: A request for public exchange information; no account credentials or customer information.
+  Terms: https://arzpaya.com/rules/
+  Privacy: https://arzpaya.com/rules/
+  The combined document includes confidentiality of user information in clause 7.
+
+Aban Tether
+  Destination: abantether.com
+  Purpose: Cryptocurrency prices from the account API.
+  Data sent: The configured API key in the Authorization header and the JSON response-format parameter.
+  Terms: https://abantether.ir/rules
+  Privacy: https://abantether.ir/rules
+  The official site links to this combined document; its identity-verification section covers confidentiality and disclosure to authorities.
+
+CoinMarketCap
+  Destination: pro-api.coinmarketcap.com
+  Purpose: Cryptocurrency quotes in USD.
+  Data sent: Selected cryptocurrency symbols, the skip-invalid flag and the configured API key in the X-CMC_PRO_API_KEY header.
+  Terms: https://coinmarketcap.com/terms/
+  Privacy: https://coinmarketcap.com/privacy/
+
+CryptoCompare
+  Destination: min-api.cryptocompare.com
+  Purpose: Cryptocurrency prices.
+  Data sent: Selected cryptocurrency symbols, the quote currency, the static application identifier MRNPriceEngine and an optional API key in a request header.
+  Terms: https://www.cryptocompare.com/terms-conditions/
+  Privacy: https://www.cryptocompare.com/privacy-policy/
+
+ExchangeRate-API
+  Destination: v6.exchangerate-api.com
+  Purpose: International currency conversion rates.
+  Data sent: The configured API key and base currency in the request path.
+  Terms: https://www.exchangerate-api.com/terms
+  Privacy: https://www.exchangerate-api.com/terms
+  Terms and Privacy Policy are sections of the same document.
+
+Fixer / APILayer
+  Destination: api.apilayer.com
+  Purpose: International currency conversion rates.
+  Data sent: The configured base and selected currency codes in the query, and the API key in the apikey header.
+  Terms: https://www.ideracorp.com/Legal/Terms-of-Use
+  Privacy: https://www.ideracorp.com/en/legal/privacypolicy
+  APILayer legal resources: https://www.ideracorp.com/legal/APILayer . Additional subscription and data-use terms can apply to the selected plan.
+
+Commodities-API
+  Destination: commodities-api.com
+  Purpose: Commodity prices converted from USD quotes.
+  Data sent: The configured API key, USD base and selected commodity symbols in the query.
+  Terms: https://commodities-api.com/terms#terms-conditions
+  Privacy: https://commodities-api.com/terms#privacy
+
+MetalpriceAPI
+  Destination: api.metalpriceapi.com
+  Purpose: Metal and currency reference rates.
+  Data sent: The configured API key, base currency and selected currency/metal codes in the query.
+  Terms: https://metalpriceapi.com/terms
+  Privacy: https://metalpriceapi.com/privacy
+
+Metals-API
+  Destination: metals-api.com
+  Purpose: Precious-metal rates.
+  Data sent: The configured API key, base currency and selected metal/currency symbols in the query.
+  Terms: https://metals-api.com/terms#terms-conditions
+  Privacy: https://metals-api.com/terms#privacy
+
+GoldAPI
+  Destination: www.goldapi.io
+  Purpose: Precious-metal prices and gram/karat quotes.
+  Data sent: Each selected metal code and USD in the request path, with the configured API key in the x-access-token header. One request is made per selected metal.
+  Terms: https://www.goldapi.io/blog/terms-of-service
+  Privacy: https://www.goldapi.io/blog/privacy-policy
+
+Open Exchange Rates
+  Destination: openexchangerates.org
+  Purpose: International reference exchange rates.
+  Data sent: The configured App ID and selected currency symbols in the query.
+  Terms: https://openexchangerates.org/terms
+  Privacy: https://openexchangerates.org/privacy
+
+Milli
+  Destination: milli.gold
+  Purpose: The 18-karat gold rate from the public widget, with a public JSON fallback when the widget cannot be parsed.
+  Data sent: Requests for the widget and, if necessary, the public price endpoint; no account credentials or customer information.
+  Terms: https://milli.gold/main/terms/
+  Privacy: https://milli.gold/main/privacy/
+
+MelliGold
+  Destination: melligold.com
+  Purpose: Gold and coin rates parsed from the selected public market pages.
+  Data sent: The selected market-page paths; no account credentials or customer information. A source cookie can be returned on a same-page redirect retry.
+  Terms: https://melligold.com/terms
+  Privacy: https://melligold.com/terms
+  The combined document includes an "امنیت و محرمانگی" (Security and Confidentiality) section.
+
+TGJU
+  Destination: www.tgju.org
+  Purpose: Gold, currency, coin and other rates parsed from public market pages.
+  Data sent: Requests for the public pages; no account credentials or customer information. A source cookie can be returned on a same-page redirect retry.
+  Terms: https://www.tgju.org/terms
+  Privacy: https://www.tgju.org/terms
+  The combined document addresses collection of member IP/contact information and restrictions on disclosure in clauses 12-13. It does not provide a separate detailed policy for anonymous page requests.
+
+= Custom JSON and TGJU Local =
+
+These are configurable connections rather than a bundled third-party service. No destination is set on a fresh installation. During an enabled refresh, the plugin sends a GET request to the exact HTTPS URL chosen by the administrator, including its configured query parameters. Custom JSON also sends the configured request headers, which can contain credentials. TGJU Local sends the URL parameters and the standard request headers only. The remote operator receives the server IP and plugin User-Agent. The provider's terms and privacy policy depend on that chosen destination; review both before entering a URL or enabling the connection. These adapters are not a proxy operated by MRNWP.
+
+= Legacy catalog entries =
+
+Bonbast, Hamyar Android, Metals Live, OK-EX.io, Parsijoo, Persian API, Taban Gohar, Tala Clinic Fars and Tala.ir Scraper are compatibility entries without a supported fetch endpoint. They return an unavailable-adapter error and do not transmit data. Their presence in existing settings does not activate a network connection.
+

@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -50,12 +50,12 @@ final class Pricing_Engine {
 		$config = $this->config( $product_id );
 
 		if ( ! $config['enabled'] ) {
-			return new \WP_Error( 'mrnpe_not_dynamic', __( 'قیمت‌گذاری پویا برای این محصول فعال نیست.', 'mrn-price-engine' ) );
+			return new \WP_Error( 'mrnpe_not_dynamic', __( 'قیمت‌گذاری پویا برای این محصول فعال نیست.', 'mrn-gold-currency-pricing' ) );
 		}
 
 		$asset = $this->assets->find( (int) $config['asset_id'] );
 		if ( ! $asset || null === $asset->value || (float) $asset->value <= 0 ) {
-			return new \WP_Error( 'mrnpe_rate_missing', __( 'نرخ معتبر برای دارایی انتخاب‌شده در دسترس نیست.', 'mrn-price-engine' ) );
+			return new \WP_Error( 'mrnpe_rate_missing', __( 'نرخ معتبر برای دارایی انتخاب‌شده در دسترس نیست.', 'mrn-gold-currency-pricing' ) );
 		}
 
 		$conversion = $this->normalize_asset_rate( $asset );
@@ -83,7 +83,7 @@ final class Pricing_Engine {
 	 */
 	public function normalize_asset_rate( object $asset, ?string $target_currency = null ): array|\WP_Error {
 		if ( null === $asset->value || (float) $asset->value <= 0 ) {
-			return new \WP_Error( 'mrnpe_rate_missing', __( 'نرخ معتبر برای دارایی انتخاب‌شده در دسترس نیست.', 'mrn-price-engine' ) );
+			return new \WP_Error( 'mrnpe_rate_missing', __( 'نرخ معتبر برای دارایی انتخاب‌شده در دسترس نیست.', 'mrn-gold-currency-pricing' ) );
 		}
 
 		$target_currency = $target_currency ?: ( function_exists( 'get_woocommerce_currency' ) ? get_woocommerce_currency() : (string) $asset->quote_currency );

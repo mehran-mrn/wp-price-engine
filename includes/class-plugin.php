@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -62,17 +62,8 @@ final class Plugin {
 			( new Admin( $this->assets, $this->providers, $this->database, $this->pricing ) )->register();
 		}
 
-		add_action( 'init', array( $this, 'load_textdomain' ) );
 	}
 
-	/**
-	 * Load translations.
-	 *
-	 * @return void
-	 */
-	public function load_textdomain(): void {
-		load_plugin_textdomain( 'mrn-price-engine', false, dirname( plugin_basename( MRNPE_FILE ) ) . '/languages' );
-	}
 
 	/**
 	 * Tell administrators that WooCommerce is required.
@@ -85,7 +76,7 @@ final class Plugin {
 		}
 
 		echo '<div class="notice notice-warning"><p>';
-		echo esc_html__( 'برای قیمت‌گذاری محصولات، افزونه MRN Price Engine به ووکامرس نیاز دارد. بخش نرخ‌ها بدون ووکامرس همچنان قابل استفاده است.', 'mrn-price-engine' );
+		echo esc_html__( 'برای قیمت‌گذاری محصولات، افزونه MRN Gold & Currency Pricing به ووکامرس نیاز دارد. بخش نرخ‌ها بدون ووکامرس همچنان قابل استفاده است.', 'mrn-gold-currency-pricing' );
 		echo '</p></div>';
 	}
 

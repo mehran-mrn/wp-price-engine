@@ -5,7 +5,7 @@
  * @package MRN_Price_Engine
  */
 
-namespace MRN\Price_Engine;
+namespace MRNPE\Price_Engine;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -128,7 +128,7 @@ final class Database {
 	public function logs( int $limit = 30 ): array {
 		global $wpdb;
 		$table = $this->table( 'logs' );
-		return (array) $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$table} ORDER BY id DESC LIMIT %d", max( 1, min( 200, $limit ) ) ) );
+		return (array) $wpdb->get_results( $wpdb->prepare( 'SELECT * FROM %i ORDER BY id DESC LIMIT %d', $table, max( 1, min( 200, $limit ) ) ) );
 	}
 
 	/**
@@ -142,7 +142,7 @@ final class Database {
 		$days   = max( 1, (int) Settings::get( 'history_retention_days', 90 ) );
 		$cutoff = gmdate( 'Y-m-d H:i:s', time() - ( DAY_IN_SECONDS * $days ) );
 
-		$wpdb->query( $wpdb->prepare( 'DELETE FROM ' . $this->table( 'rate_history' ) . ' WHERE recorded_at < %s', $cutoff ) );
-		$wpdb->query( $wpdb->prepare( 'DELETE FROM ' . $this->table( 'logs' ) . ' WHERE created_at < %s', $cutoff ) );
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE recorded_at < %s', $this->table( 'rate_history' ), $cutoff ) );
+		$wpdb->query( $wpdb->prepare( 'DELETE FROM %i WHERE created_at < %s', $this->table( 'logs' ), $cutoff ) );
 	}
 }
